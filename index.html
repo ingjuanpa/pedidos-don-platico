@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Don Platico — Pedidos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Baloo+2:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --sand:#FBEBCB;
@@ -67,9 +67,13 @@
     margin-bottom:6px;
   }
   .hero h1{
-    font-size: 38px;
-    font-weight:700;
-    line-height:1.05;
+    font-family:'Baloo 2', 'Fraunces', serif;
+    font-size: 44px;
+    font-weight:800;
+    line-height:1.02;
+    color: #FFA23A;
+    letter-spacing: .01em;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.25), 0 0 22px rgba(255,162,58,0.35);
   }
   .hero p{
     color:#D8D2C4;
@@ -117,30 +121,6 @@
   input[type=text]:focus{
     outline:none;
     border-color: var(--palm);
-  }
-
-  /* Menu del dia dish choice */
-  .dish-select{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:14px;
-  }
-  .dish-chip{
-    border:1.5px solid var(--line);
-    background:#fff;
-    padding:8px 12px;
-    border-radius:20px;
-    font-size:13.5px;
-    cursor:pointer;
-    user-select:none;
-    transition: border-color .15s, background .15s, color .15s;
-  }
-  .dish-chip input{display:none;}
-  .dish-chip.active{
-    background: var(--palm);
-    border-color: var(--palm);
-    color: #fff;
   }
 
   .included-note{
@@ -324,30 +304,10 @@
     <h2>Menú del día / ejecutivo</h2>
     <p class="block-note">Incluye acompañamientos de la casa y aguapanela.</p>
 
-    <label class="field">Elige tu plato</label>
-    <div class="dish-select" id="dishSelect">
-      <label class="dish-chip"><input type="radio" name="dish" value="Hígado (Bistec / Encebollado)">Hígado (Bistec / Encebollado)</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Pollo Frito / Pollo Guisado">Pollo Frito / Pollo Guisado</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Pechuga Asada / Carne Asada">Pechuga Asada / Carne Asada</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Alitas BBQ">Alitas BBQ</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Lomo de Cerdo Asado">Lomo de Cerdo Asado</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Salpicón de Pescado">Salpicón de Pescado</label>
-      <label class="dish-chip"><input type="radio" name="dish" value="Jurel en Zumo de Coco">Jurel en Zumo de Coco</label>
-    </div>
-
     <div class="included-note">🥤 La aguapanela va incluida con el menú del día.</div>
+    <p class="block-note" style="margin-top:-6px;">Puedes elegir varios platos a la vez.</p>
 
-    <div class="item-row">
-      <div class="item-info">
-        <div class="item-name" id="dishLabel">Plato completo (elige arriba)</div>
-        <div class="item-price">$19.000 c/u</div>
-      </div>
-      <div class="stepper" data-item="menu" data-price="19000" data-name="">
-        <button type="button" data-action="minus">−</button>
-        <span class="qty">0</span>
-        <button type="button" data-action="plus">+</button>
-      </div>
-    </div>
+    <div id="menuDishes"></div>
 
     <div class="item-row">
       <div class="item-info">
@@ -413,6 +373,16 @@
 <script>
   const WHATSAPP_NUMBER = "573014885090"; // 301 488 5090
 
+  const menuDiaData = [
+    ["Hígado (Bistec / Encebollado)", 19000],
+    ["Pollo Frito / Pollo Guisado", 19000],
+    ["Pechuga Asada / Carne Asada", 19000],
+    ["Alitas BBQ", 19000],
+    ["Lomo de Cerdo Asado", 19000],
+    ["Salpicón de Pescado", 19000],
+    ["Jurel en Zumo de Coco", 19000],
+  ];
+
   const especialidadesData = [
     ["Mojarra Marinera", 55000],
     ["Arroz de Mariscos", 50000],
@@ -463,22 +433,10 @@
     });
   }
 
+  buildRows(document.getElementById("menuDishes"), menuDiaData, "dish");
   buildRows(document.getElementById("especialidades"), especialidadesData, "esp");
   buildRows(document.getElementById("adicionales"), adicionalesData, "adi");
   buildRows(document.getElementById("bebidas"), bebidasData, "beb");
-
-  // dish selection for menu del dia
-  const dishInputs = document.querySelectorAll('input[name="dish"]');
-  const dishLabel = document.getElementById("dishLabel");
-  const menuStepper = document.querySelector('.stepper[data-item="menu"]');
-  dishInputs.forEach(inp => {
-    inp.addEventListener("change", () => {
-      document.querySelectorAll(".dish-chip").forEach(c => c.classList.remove("active"));
-      inp.closest(".dish-chip").classList.add("active");
-      dishLabel.textContent = inp.value;
-      menuStepper.setAttribute("data-name", inp.value);
-    });
-  });
 
   // steppers
   document.body.addEventListener("click", (e) => {
@@ -487,14 +445,6 @@
     const stepper = btn.closest(".stepper");
     const qtyEl = stepper.querySelector(".qty");
     let qty = parseInt(qtyEl.textContent, 10);
-
-    if(stepper.dataset.item === "menu" && qty === 0 && btn.dataset.action === "plus"){
-      const checked = document.querySelector('input[name="dish"]:checked');
-      if(!checked){
-        alert("Primero elige un plato del menú del día.");
-        return;
-      }
-    }
 
     if(btn.dataset.action === "plus") qty++;
     if(btn.dataset.action === "minus") qty = Math.max(0, qty - 1);
@@ -546,12 +496,12 @@
       summaryEl.appendChild(line);
     });
 
-    // domicilio logic
-    let domicilio = 0;
-    if(cart.length > 0){
-      const onlySopa = cart.length === 1 && cart[0].key === "sopa";
-      domicilio = onlySopa ? 2000 : 1000;
-    }
+    // recipientes: $1.000 por cada servicio en la orden; la Sopa con Arroz lleva 2 recipientes ($2.000 c/u)
+    let recipientes = 0;
+    cart.forEach(item => {
+      const porUnidad = item.key === "sopa" ? 2000 : 1000;
+      recipientes += porUnidad * item.qty;
+    });
 
     if(cart.length === 0){
       emptyNote.style.display = "block";
@@ -559,16 +509,16 @@
       emptyNote.style.display = "none";
       const domLine = document.createElement("div");
       domLine.className = "summary-line";
-      domLine.innerHTML = `<span>Domicilio (recipientes)</span><span>${money(domicilio)}</span>`;
+      domLine.innerHTML = `<span>Recipientes (envoltura)</span><span>${money(recipientes)}</span>`;
       summaryEl.appendChild(domLine);
 
       const totalLine = document.createElement("div");
       totalLine.className = "summary-line total";
-      totalLine.innerHTML = `<span>Total a pagar</span><span>${money(subtotal + domicilio)}</span>`;
+      totalLine.innerHTML = `<span>Total a pagar</span><span>${money(subtotal + recipientes)}</span>`;
       summaryEl.appendChild(totalLine);
     }
 
-    const total = subtotal + domicilio;
+    const total = subtotal + recipientes;
     document.getElementById("ctaTotal").textContent = money(total);
 
     const nombre = document.getElementById("nombre").value.trim();
@@ -576,7 +526,7 @@
     const sendBtn = document.getElementById("sendBtn");
     sendBtn.disabled = !(cart.length > 0 && nombre && direccion);
 
-    return { cart, subtotal, domicilio, total };
+    return { cart, subtotal, recipientes, total };
   }
 
   document.getElementById("nombre").addEventListener("input", render);
@@ -584,7 +534,7 @@
   document.getElementById("billete").addEventListener("input", render);
 
   document.getElementById("sendBtn").addEventListener("click", () => {
-    const { cart, subtotal, domicilio, total } = render();
+    const { cart, subtotal, recipientes, total } = render();
     const nombre = document.getElementById("nombre").value.trim();
     const direccion = document.getElementById("direccion").value.trim();
     const billete = document.getElementById("billete").value.trim();
@@ -597,7 +547,7 @@
       msg += `- ${item.name} x${item.qty} — ${money(item.price * item.qty)}\n`;
     });
     msg += `\nSubtotal: ${money(subtotal)}\n`;
-    msg += `Domicilio (recipientes): ${money(domicilio)}\n`;
+    msg += `Recipientes (envoltura): ${money(recipientes)}\n`;
     msg += `*Total: ${money(total)}*\n\n`;
     msg += `Medio de pago: ${payMethod}\n`;
     if(payMethod === "Efectivo" && billete){

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don Platico — Pedidos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#FBEBCB;
+    --sand-deep:#F3D9A4;
+    --paper:#FFFDF6;
+    --ink:#2B2018;
+    --ink-soft:#6B5D4F;
+    --tomato:#B4332A;
+    --tomato-deep:#8F2620;
+    --palm:#1F4B3F;
+    --palm-deep:#163A30;
+    --navy:#181A2E;
+    --mango:#E19A2C;
+    --line: rgba(43,32,24,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 8% 0%, rgba(225,154,44,0.18), transparent 45%),
+      radial-gradient(circle at 100% 30%, rgba(31,75,63,0.10), transparent 40%),
+      var(--sand);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.45;
+    padding-bottom: 90px;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    margin:0;
+    color:var(--ink);
+  }
+
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+
+  /* Hero */
+  .hero{
+    background: var(--navy);
+    color: var(--sand);
+    padding: 34px 18px 40px;
+    border-bottom: 6px solid var(--mango);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-60px;
+    width:220px;height:220px;
+    background: radial-gradient(circle, rgba(225,154,44,0.35), transparent 70%);
+  }
+  .hero .wrap{position:relative;}
+  .hero .kicker{
+    color:var(--mango);
+    font-size:13px;
+    letter-spacing:.02em;
+    margin-bottom:6px;
+  }
+  .hero h1{
+    font-size: 38px;
+    font-weight:700;
+    line-height:1.05;
+  }
+  .hero p{
+    color:#D8D2C4;
+    max-width: 46ch;
+    margin-top:10px;
+    font-size:15px;
+  }
+
+  /* Section shell */
+  section.block{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 20px 8px;
+    margin-top: 20px;
+  }
+  section.block h2{
+    font-size:21px;
+    font-weight:600;
+  }
+  .block-note{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    margin: 4px 0 14px;
+  }
+
+  /* form fields */
+  label.field{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom: 6px;
+  }
+  input[type=text]{
+    width:100%;
+    padding: 11px 13px;
+    border-radius:9px;
+    border:1.5px solid var(--line);
+    font-family:inherit;
+    font-size:15px;
+    background: #fff;
+    margin-bottom: 16px;
+  }
+  input[type=text]:focus{
+    outline:none;
+    border-color: var(--palm);
+  }
+
+  /* Menu del dia dish choice */
+  .dish-select{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .dish-chip{
+    border:1.5px solid var(--line);
+    background:#fff;
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:13.5px;
+    cursor:pointer;
+    user-select:none;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .dish-chip input{display:none;}
+  .dish-chip.active{
+    background: var(--palm);
+    border-color: var(--palm);
+    color: #fff;
+  }
+
+  .included-note{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background: rgba(31,75,63,0.08);
+    border:1px dashed rgba(31,75,63,0.35);
+    color:var(--palm-deep);
+    font-size:13px;
+    padding:8px 12px;
+    border-radius:9px;
+    margin-bottom:14px;
+  }
+
+  /* Item rows (used for menu, especialidades, adicionales, bebidas) */
+  .item-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding: 12px 0;
+    border-top: 1px dashed var(--line);
+  }
+  .item-row:first-of-type{border-top:none;}
+  .item-info{flex:1;min-width:0;}
+  .item-name{font-size:15px;font-weight:600;}
+  .item-price{
+    font-size:13px;
+    color:var(--tomato-deep);
+    font-weight:600;
+    margin-top:2px;
+  }
+  .stepper{
+    display:flex;
+    align-items:center;
+    gap:0;
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .stepper button{
+    width:32px;height:32px;
+    border:none;
+    background:var(--sand-deep);
+    color:var(--ink);
+    font-size:17px;
+    cursor:pointer;
+    font-family:inherit;
+    line-height:1;
+  }
+  .stepper button:active{background:var(--mango);}
+  .stepper .qty{
+    width:30px;
+    text-align:center;
+    font-weight:600;
+    font-size:14px;
+  }
+
+  /* payment */
+  .pay-options{
+    display:flex;
+    gap:10px;
+    margin-bottom: 14px;
+  }
+  .pay-btn{
+    flex:1;
+    border:1.5px solid var(--line);
+    background:#fff;
+    padding:13px 10px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .pay-btn.active{
+    background: var(--tomato);
+    border-color: var(--tomato);
+    color:#fff;
+  }
+  #billeteWrap{display:none;}
+
+  /* summary / total bar */
+  .summary-line{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    padding: 6px 0;
+    color: var(--ink-soft);
+  }
+  .summary-line.total{
+    color:var(--ink);
+    font-weight:700;
+    font-size:18px;
+    border-top: 1.5px solid var(--line);
+    margin-top:6px;
+    padding-top:12px;
+  }
+  .empty-note{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    padding: 10px 0 16px;
+  }
+
+  .sticky-cta{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    background: var(--navy);
+    border-top: 4px solid var(--mango);
+    padding: 12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 20;
+  }
+  .sticky-cta button{
+    width:100%;
+    max-width: 640px;
+    background: #25D366;
+    color:#0b2b16;
+    border:none;
+    font-family:'Work Sans',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    padding: 14px 18px;
+    border-radius: 11px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .sticky-cta button:disabled{
+    background:#9fb3a7;
+    color:#4a5a51;
+    cursor:not-allowed;
+  }
+  .sticky-cta .wa-total{
+    font-family:'Fraunces',serif;
+  }
+
+  footer.foot{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    margin-top: 26px;
+    padding: 0 18px;
+  }
+
+  @media (max-width:400px){
+    .hero h1{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Restaurante · Sabor Caribe</div>
+    <h1>Don Platico</h1>
+    <p>Arma tu pedido, revisa el total y envíalo directo por WhatsApp. Realiza tu pedido con anticipación.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Datos del cliente -->
+  <section class="block">
+    <h2>Tus datos</h2>
+    <p class="block-note">Los necesitamos para preparar y entregar tu pedido.</p>
+    <label class="field" for="nombre">Nombre de contacto</label>
+    <input type="text" id="nombre" placeholder="Ej. Juan Pablo Durán">
+    <label class="field" for="direccion">Dirección de entrega</label>
+    <input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20, Barrio Centro">
+  </section>
+
+  <!-- Menu del dia -->
+  <section class="block">
+    <h2>Menú del día / ejecutivo</h2>
+    <p class="block-note">Incluye acompañamientos de la casa y aguapanela.</p>
+
+    <label class="field">Elige tu plato</label>
+    <div class="dish-select" id="dishSelect">
+      <label class="dish-chip"><input type="radio" name="dish" value="Hígado (Bistec / Encebollado)">Hígado (Bistec / Encebollado)</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Pollo Frito / Pollo Guisado">Pollo Frito / Pollo Guisado</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Pechuga Asada / Carne Asada">Pechuga Asada / Carne Asada</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Alitas BBQ">Alitas BBQ</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Lomo de Cerdo Asado">Lomo de Cerdo Asado</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Salpicón de Pescado">Salpicón de Pescado</label>
+      <label class="dish-chip"><input type="radio" name="dish" value="Jurel en Zumo de Coco">Jurel en Zumo de Coco</label>
+    </div>
+
+    <div class="included-note">🥤 La aguapanela va incluida con el menú del día.</div>
+
+    <div class="item-row">
+      <div class="item-info">
+        <div class="item-name" id="dishLabel">Plato completo (elige arriba)</div>
+        <div class="item-price">$19.000 c/u</div>
+      </div>
+      <div class="stepper" data-item="menu" data-price="19000" data-name="">
+        <button type="button" data-action="minus">−</button>
+        <span class="qty">0</span>
+        <button type="button" data-action="plus">+</button>
+      </div>
+    </div>
+
+    <div class="item-row">
+      <div class="item-info">
+        <div class="item-name">Sopa con Arroz</div>
+        <div class="item-price">$9.000 c/u</div>
+      </div>
+      <div class="stepper" data-item="sopa" data-price="9000" data-name="Sopa con Arroz">
+        <button type="button" data-action="minus">−</button>
+        <span class="qty">0</span>
+        <button type="button" data-action="plus">+</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Especialidades a la carta -->
+  <section class="block">
+    <h2>Especialidades a la carta</h2>
+    <p class="block-note">Mariscos y carnes especiales.</p>
+    <div id="especialidades"></div>
+  </section>
+
+  <!-- Adicionales -->
+  <section class="block">
+    <h2>Adicionales</h2>
+    <div id="adicionales"></div>
+  </section>
+
+  <!-- Bebidas -->
+  <section class="block">
+    <h2>Bebidas</h2>
+    <div id="bebidas"></div>
+  </section>
+
+  <!-- Pago -->
+  <section class="block">
+    <h2>Medio de pago</h2>
+    <div class="pay-options">
+      <div class="pay-btn active" data-pay="Efectivo">Efectivo</div>
+      <div class="pay-btn" data-pay="Transferencia NEQUI">Transferencia NEQUI</div>
+    </div>
+    <div id="billeteWrap">
+      <label class="field" for="billete">¿Con qué billete pagas? (para llevar el cambio)</label>
+      <input type="text" id="billete" placeholder="Ej. $50.000">
+    </div>
+  </section>
+
+  <!-- Resumen -->
+  <section class="block">
+    <h2>Resumen del pedido</h2>
+    <div id="summaryLines"></div>
+    <div id="emptyNote" class="empty-note">Aún no has agregado platos ni bebidas.</div>
+  </section>
+
+  <footer class="foot">Nequi Don Platico · 301 488 5090 · Pedidos con anticipación</footer>
+</div>
+
+<div class="sticky-cta">
+  <button id="sendBtn" disabled>
+    Enviar pedido por WhatsApp — <span class="wa-total" id="ctaTotal">$0</span>
+  </button>
+</div>
+
+<script>
+  const WHATSAPP_NUMBER = "573014885090"; // 301 488 5090
+
+  const especialidadesData = [
+    ["Mojarra Marinera", 55000],
+    ["Arroz de Mariscos", 50000],
+    ["Mojarra en Zumo de Coco", 45000],
+    ["Arroz con Camarones", 40000],
+    ["Mojarra Frita", 40000],
+    ["Coctel de Camarón", 35000],
+    ["Pechuga en Salsa de Queso + Arroz Coco", 30000],
+    ["Bistec a Caballo", 26000],
+  ];
+
+  const adicionalesData = [
+    ["Porción Papas / Yuca Frita", 7000],
+    ["Patacones / Tajadas", 5000],
+    ["Granos / Ensalada", 5000],
+    ["Porción Arroz de Coco", 4000],
+    ["Porción Arroz Blanco", 3000],
+    ["Cambio a Arroz de Coco", 2000],
+  ];
+
+  const bebidasData = [
+    ["Jugo en Leche", 8000],
+    ["Jugo Natural en Agua", 7000],
+    ["Jugo PET", 4000],
+    ["Gaseosa", 3500],
+    ["Bebida Adicional", 1000],
+  ];
+
+  function money(n){
+    return "$" + n.toLocaleString("es-CO");
+  }
+
+  function buildRows(container, data, keyPrefix){
+    data.forEach(([name, price], idx) => {
+      const row = document.createElement("div");
+      row.className = "item-row";
+      row.innerHTML = `
+        <div class="item-info">
+          <div class="item-name">${name}</div>
+          <div class="item-price">${money(price)} c/u</div>
+        </div>
+        <div class="stepper" data-item="${keyPrefix}${idx}" data-price="${price}" data-name="${name}">
+          <button type="button" data-action="minus">−</button>
+          <span class="qty">0</span>
+          <button type="button" data-action="plus">+</button>
+        </div>`;
+      container.appendChild(row);
+    });
+  }
+
+  buildRows(document.getElementById("especialidades"), especialidadesData, "esp");
+  buildRows(document.getElementById("adicionales"), adicionalesData, "adi");
+  buildRows(document.getElementById("bebidas"), bebidasData, "beb");
+
+  // dish selection for menu del dia
+  const dishInputs = document.querySelectorAll('input[name="dish"]');
+  const dishLabel = document.getElementById("dishLabel");
+  const menuStepper = document.querySelector('.stepper[data-item="menu"]');
+  dishInputs.forEach(inp => {
+    inp.addEventListener("change", () => {
+      document.querySelectorAll(".dish-chip").forEach(c => c.classList.remove("active"));
+      inp.closest(".dish-chip").classList.add("active");
+      dishLabel.textContent = inp.value;
+      menuStepper.setAttribute("data-name", inp.value);
+    });
+  });
+
+  // steppers
+  document.body.addEventListener("click", (e) => {
+    const btn = e.target.closest(".stepper button");
+    if(!btn) return;
+    const stepper = btn.closest(".stepper");
+    const qtyEl = stepper.querySelector(".qty");
+    let qty = parseInt(qtyEl.textContent, 10);
+
+    if(stepper.dataset.item === "menu" && qty === 0 && btn.dataset.action === "plus"){
+      const checked = document.querySelector('input[name="dish"]:checked');
+      if(!checked){
+        alert("Primero elige un plato del menú del día.");
+        return;
+      }
+    }
+
+    if(btn.dataset.action === "plus") qty++;
+    if(btn.dataset.action === "minus") qty = Math.max(0, qty - 1);
+    qtyEl.textContent = qty;
+    render();
+  });
+
+  // pago
+  let payMethod = "Efectivo";
+  document.querySelectorAll(".pay-btn").forEach(b => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".pay-btn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      payMethod = b.dataset.pay;
+      document.getElementById("billeteWrap").style.display = payMethod === "Efectivo" ? "block" : "none";
+      render();
+    });
+  });
+
+  function getCart(){
+    const steppers = document.querySelectorAll(".stepper");
+    const cart = [];
+    steppers.forEach(s => {
+      const qty = parseInt(s.querySelector(".qty").textContent, 10);
+      if(qty > 0){
+        cart.push({
+          key: s.dataset.item,
+          name: s.dataset.name || "Plato del menú del día",
+          price: parseInt(s.dataset.price, 10),
+          qty
+        });
+      }
+    });
+    return cart;
+  }
+
+  function render(){
+    const cart = getCart();
+    const summaryEl = document.getElementById("summaryLines");
+    const emptyNote = document.getElementById("emptyNote");
+    summaryEl.innerHTML = "";
+
+    let subtotal = 0;
+    cart.forEach(item => {
+      subtotal += item.price * item.qty;
+      const line = document.createElement("div");
+      line.className = "summary-line";
+      line.innerHTML = `<span>${item.name} × ${item.qty}</span><span>${money(item.price * item.qty)}</span>`;
+      summaryEl.appendChild(line);
+    });
+
+    // domicilio logic
+    let domicilio = 0;
+    if(cart.length > 0){
+      const onlySopa = cart.length === 1 && cart[0].key === "sopa";
+      domicilio = onlySopa ? 2000 : 1000;
+    }
+
+    if(cart.length === 0){
+      emptyNote.style.display = "block";
+    } else {
+      emptyNote.style.display = "none";
+      const domLine = document.createElement("div");
+      domLine.className = "summary-line";
+      domLine.innerHTML = `<span>Domicilio (recipientes)</span><span>${money(domicilio)}</span>`;
+      summaryEl.appendChild(domLine);
+
+      const totalLine = document.createElement("div");
+      totalLine.className = "summary-line total";
+      totalLine.innerHTML = `<span>Total a pagar</span><span>${money(subtotal + domicilio)}</span>`;
+      summaryEl.appendChild(totalLine);
+    }
+
+    const total = subtotal + domicilio;
+    document.getElementById("ctaTotal").textContent = money(total);
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const sendBtn = document.getElementById("sendBtn");
+    sendBtn.disabled = !(cart.length > 0 && nombre && direccion);
+
+    return { cart, subtotal, domicilio, total };
+  }
+
+  document.getElementById("nombre").addEventListener("input", render);
+  document.getElementById("direccion").addEventListener("input", render);
+  document.getElementById("billete").addEventListener("input", render);
+
+  document.getElementById("sendBtn").addEventListener("click", () => {
+    const { cart, subtotal, domicilio, total } = render();
+    const nombre = document.getElementById("nombre").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const billete = document.getElementById("billete").value.trim();
+
+    let msg = `*Pedido Don Platico*\n\n`;
+    msg += `Nombre: ${nombre}\n`;
+    msg += `Dirección: ${direccion}\n\n`;
+    msg += `*Pedido:*\n`;
+    cart.forEach(item => {
+      msg += `- ${item.name} x${item.qty} — ${money(item.price * item.qty)}\n`;
+    });
+    msg += `\nSubtotal: ${money(subtotal)}\n`;
+    msg += `Domicilio (recipientes): ${money(domicilio)}\n`;
+    msg += `*Total: ${money(total)}*\n\n`;
+    msg += `Medio de pago: ${payMethod}\n`;
+    if(payMethod === "Efectivo" && billete){
+      msg += `Paga con: ${billete}\n`;
+    }
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+  });
+
+  render();
+</script>
+</body>
+</html>

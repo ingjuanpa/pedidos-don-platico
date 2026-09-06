@@ -244,10 +244,21 @@
     z-index: 20;
   }
   .sticky-cta .hint{
-    color: var(--mango);
-    font-size: 14.5px;
-    text-align:center;
+    width:100%;
     max-width: 640px;
+    background: #FFA23A;
+    color:#3A2308;
+    border:none;
+    font-family:'Work Sans',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    padding: 14px 18px;
+    border-radius: 11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:10px;
   }
   .sticky-cta button{
     width:100%;
@@ -516,9 +527,10 @@
       summaryEl.appendChild(line);
     });
 
-    // recipientes: $1.000 por cada servicio en la orden; la Sopa con Arroz lleva 2 recipientes ($2.000 c/u)
+    // recipientes: $1.000 por cada comida (menú del día, sopa, especialidades); no aplica a adicionales ni bebidas
     let recipientes = 0;
     cart.forEach(item => {
+      if(item.key.startsWith("adi") || item.key.startsWith("beb")) return;
       const porUnidad = item.key === "sopa" ? 2000 : 1000;
       recipientes += porUnidad * item.qty;
     });
@@ -547,7 +559,8 @@
     const sendBtn = document.getElementById("sendBtn");
     const canSend = cart.length > 0 && nombre && telefono && direccion;
     sendBtn.disabled = !canSend;
-    document.getElementById("disabledHint").style.display = canSend ? "none" : "block";
+    document.getElementById("disabledHint").style.display = canSend ? "none" : "flex";
+    sendBtn.style.display = canSend ? "flex" : "none";
 
     return { cart, subtotal, recipientes, total };
   }

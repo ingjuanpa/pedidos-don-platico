@@ -426,28 +426,7 @@
 
 <script>
   const WHATSAPP_NUMBER = "573178451450"; // 317 845 1450 — WhatsApp Business "Don Platico Restaurante"
-
-  // TODO: reemplazar por el texto exacto del archivo "Menú Don Platico_Sept 06 2026.txt" cuando Juan lo comparta
-  const DAILY_MENU_TEXT = `*Menú del día — Don Platico*
-
-Incluye acompañamientos de la casa y aguapanela.
-
-- Hígado en Bistec
-- Hígado Encebollado
-- Pollo Frito
-- Pollo Guisado
-- Pechuga Asada
-- Carne Asada
-- Chuleta Asada
-- Alitas BBQ
-- Lomo de Cerdo Asado
-- Salpicón de Pescado
-- Jurel en Zumo de Coco
-
-Precio: $19.000 c/u
-Sopa con Arroz: $9.000
-
-Hola, quiero pedir del menú del día. Este es mi pedido:`;
+  const NEQUI_NUMBER = "301 488 5090";
 
   document.getElementById("exitBtn").addEventListener("click", () => {
     if(confirm("¿Seguro que quieres salir sin hacer tu pedido?")){
@@ -457,8 +436,35 @@ Hola, quiero pedir del menú del día. Este es mi pedido:`;
     }
   });
 
+  function buildDailyMenuText(){
+    const listLines = (data) => data.map(([name, price]) => `- ${name}: ${money(price)}`).join("\n");
+
+    return `*Menú Don Platico*
+
+*Menú del día / ejecutivo* (incluye acompañamientos de la casa y aguapanela)
+${listLines(menuDiaData)}
+- Sopa con Arroz: ${money(9000)}
+
+*Especialidades a la carta*
+${listLines(especialidadesData)}
+
+*Adicionales*
+${listLines(adicionalesData)}
+
+*Bebidas*
+${listLines(bebidasData)}
+
+*Ten en cuenta:*
+1. Si vas a realizar el pedido, deja tu información de contacto: nombre, dirección y forma de pago.
+2. El valor del recipiente es de $1.000 por plato del menú.
+3. La Sopa con Arroz para llevar tiene un valor de $11.000 (incluye recipientes).
+4. Recibimos transferencias por NEQUI al número ${NEQUI_NUMBER}.
+
+Hola, quiero pedir del menú. Este es mi pedido:`;
+  }
+
   document.getElementById("quickMenuBtn").addEventListener("click", () => {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DAILY_MENU_TEXT)}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildDailyMenuText())}`;
     window.open(url, "_blank");
   });
 

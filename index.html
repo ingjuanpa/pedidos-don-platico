@@ -192,19 +192,28 @@
   }
   .pay-btn{
     flex:1;
-    border:1.5px solid var(--line);
+    border:2px solid #25D366;
     background:#fff;
-    padding:13px 10px;
+    color: var(--ink);
+    padding:12px 10px;
     border-radius:10px;
     text-align:center;
-    font-weight:600;
-    font-size:14px;
     cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+  }
+  .pay-btn .pay-line1, .pay-btn .pay-line2{
+    font-weight:700;
+    font-size:16px;
+    color: var(--ink);
   }
   .pay-btn.active{
-    background: var(--tomato);
-    border-color: var(--tomato);
-    color:#fff;
+    background: rgba(37,211,102,0.12);
+    border-color: #25D366;
+    color: #000;
   }
   #billeteWrap{display:none;}
 
@@ -296,6 +305,8 @@
 
   @media (max-width:400px){
     .hero h1{font-size:30px;}
+    .pay-options{flex-direction:column;}
+    .pay-btn{font-size:13px;}
   }
 
   .top-actions{
@@ -310,14 +321,20 @@
     color: var(--ink);
     font-family:'Work Sans',sans-serif;
     font-weight:600;
-    font-size:13px;
+    font-size:15px;
     padding: 9px 14px;
     border-radius: 9px;
     cursor:pointer;
   }
-  .ghost-btn-accent{
+  #exitBtn{
+    background: var(--tomato);
     border-color: var(--tomato);
-    color: var(--tomato-deep);
+    color: #fff;
+  }
+  .ghost-btn-accent{
+    background: #25D366;
+    border-color: #25D366;
+    color: #000;
     flex:1;
   }
 </style>
@@ -396,10 +413,16 @@
 
   <!-- Pago -->
   <section class="block">
-    <h2>Medio de pago</h2>
+    <h2>Seleccionar medio de pago</h2>
     <div class="pay-options">
-      <div class="pay-btn active" data-pay="Efectivo">Efectivo</div>
-      <div class="pay-btn" data-pay="Transferencia NEQUI">Transferencia NEQUI</div>
+      <div class="pay-btn active" data-pay="Efectivo">
+        <span class="pay-line1">Pago en Efectivo</span>
+        <span class="pay-line2">Tengo la suma cerrada de $...</span>
+      </div>
+      <div class="pay-btn" data-pay="Transferencia NEQUI">
+        <span class="pay-line1">Pago por transferencia</span>
+        <span class="pay-line2">LLAVE o NEQUI: 3014885090</span>
+      </div>
     </div>
     <div id="billeteWrap">
       <label class="field" for="billete">¿Con qué billete pagas? (para llevar el cambio)</label>
@@ -600,10 +623,13 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
       summaryEl.appendChild(line);
     });
 
-    // recipientes: $1.000 por cada comida (menú del día, sopa, especialidades); no aplica a adicionales ni bebidas
+    // recipientes: $1.000 por cada comida (menú del día, sopa, especialidades) y por los jugos en leche/agua; no aplica a adicionales ni al resto de bebidas
+    const bebidasConRecipiente = ["Jugo en Leche", "Jugo Natural en Agua"];
     let recipientes = 0;
     cart.forEach(item => {
-      if(item.key.startsWith("adi") || item.key.startsWith("beb")) return;
+      const esBebidaConRecipiente = item.key.startsWith("beb") && bebidasConRecipiente.includes(item.name);
+      if(item.key.startsWith("adi")) return;
+      if(item.key.startsWith("beb") && !esBebidaConRecipiente) return;
       const porUnidad = item.key === "sopa" ? 2000 : 1000;
       recipientes += porUnidad * item.qty;
     });

@@ -6,7 +6,7 @@
 <title>Don Platico — Pedidos</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Baloo+2:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{ --sand:#FBEBCB; --sand-deep:#F3D9A4; --paper:#FFFDF6; --ink:#2B2018; --ink-soft:#6B5D4F; --tomato:#B4332A; --palm:#1F4B3F; --navy:#181A2E; --mango:#E19A2C; --line: rgba(43,32,24,0.14); }
+  :root{ --sand:#FBEBCB; --sand-deep:#F3D9A4; --paper:#FFFDF6; --ink:#2B2018; --ink-soft:#6B5D4F; --tomato:#B4332A; --tomato-deep:#8F2620; --palm:#1F4B3F; --navy:#181A2E; --mango:#E19A2C; --line: rgba(43,32,24,0.14); }
   *{box-sizing:border-box;} html,body{margin:0;padding:0;}
   body{ background: var(--sand); color:var(--ink); font-family:'Work Sans', sans-serif; line-height:1.45; padding-bottom:110px; }
  .wrap{max-width:640px;margin:0 auto;padding:0 18px;}
@@ -19,15 +19,14 @@
   label.field{ display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
   input[type=text], textarea{ width:100%; padding:11px 13px; border-radius:9px; border:1.5px solid var(--line); font-family:inherit; font-size:15px; background:#fff; margin-bottom:16px; }
  .item-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-top:1px dashed var(--line); }
- .item-row:first-of-type{border-top:none;}.item-name{font-weight:600;}.item-price{ font-size:13px; color:#8F2620; font-weight:600; }
+ .item-row:first-of-type{border-top:none;}.item-name{font-weight:600;}.item-price{ font-size:13px; color:var(--tomato-deep); font-weight:600; }
  .stepper{ display:flex; align-items:center; border:1.5px solid var(--line); border-radius:9px; overflow:hidden; }
  .stepper button{ width:32px;height:32px; border:none; background:var(--sand-deep); font-size:17px; cursor:pointer; }
  .stepper.qty{ width:30px; text-align:center; font-weight:600; }
-  /* PAGO RESTAURADO */
  .pay-options{ display:flex; gap:10px; margin-bottom:14px; }
- .pay-btn{ flex:1; border:2px solid #25D366; background:#fff; color: var(--ink); padding:12px 10px; border-radius:10px; text-align:center; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
- .pay-btn.pay-line1,.pay-btn.pay-line2{ font-weight:700; font-size:16px; color: var(--ink); line-height:1.2; }
- .pay-btn.active{ background: rgba(37,211,102,0.12); border-color: #25D366; color:#000; }
+ .pay-btn{ flex:1; border:2px solid #25D366; background:#fff; padding:12px 10px; border-radius:10px; text-align:center; cursor:pointer; display:flex; flex-direction:column; gap:3px; }
+ .pay-btn.active{ background: rgba(37,211,102,0.12); }
+ .pay-line1{ font-weight:700; font-size:15px; }.pay-line2{ font-weight:500; font-size:13px; }
   #billeteWrap{display:none;}
  .summary-line{ display:flex; justify-content:space-between; font-size:14px; padding:6px 0; color:var(--ink-soft); }.summary-line.total{ color:var(--ink); font-weight:700; font-size:18px; border-top:1.5px solid var(--line); margin-top:6px; padding-top:12px; }
  .empty-note{ color:var(--ink-soft); font-size:13.5px; padding:10px 0 16px; }
@@ -36,114 +35,112 @@
  .sticky-cta button{ width:100%; max-width:640px; background:#25D366; color:#0b2b16; border:none; font-weight:700; font-size:16px; padding:14px 18px; border-radius:11px; cursor:pointer; }
  .sticky-cta button:disabled{ background:#9fb3a7; }
  .nequi-banner{ background:#FFF9DB; border:3px solid #25D366; border-radius:12px; padding:14px 12px; text-align:center; font-weight:800; font-size:14px; margin-top:18px; }
- .top-actions{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }.ghost-btn{ border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:15px; padding:9px 14px; border-radius:9px; cursor:pointer; } #exitBtn{ background:#B4332A; border-color:#B4332A; color:#fff; }.ghost-btn-accent{ background:#25D366; border-color:#25D366; flex:1; }
- .exit-bottom{ width:100%; margin-top:22px; background:#B4332A; color:#000; border:2px solid #B4332A; font-weight:800; font-size:15px; padding:13px 16px; border-radius:11px; cursor:pointer; }
- .voice-cta{ width:100%; background:#1F4B3F; color:#fff; border:none; border-radius:11px; padding:14px 16px; font-weight:700; font-size:15px; cursor:pointer; margin-bottom:18px; }
+ .top-actions{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }.ghost-btn{ border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:15px; padding:9px 14px; border-radius:9px; cursor:pointer; } #exitBtn{ background:var(--tomato); border-color:var(--tomato); color:#fff; }.ghost-btn-accent{ background:#25D366; border-color:#25D366; flex:1; }
+ .exit-bottom{ width:100%; margin-top:22px; background:var(--tomato); color:#000; border:2px solid var(--tomato); font-weight:800; font-size:15px; padding:13px 16px; border-radius:11px; cursor:pointer; }
+ .voice-cta{ width:100%; background:var(--palm); color:#fff; border:none; border-radius:11px; padding:14px 16px; font-weight:700; font-size:15px; cursor:pointer; margin-bottom:18px; }
  .voice-overlay{ display:none; position:fixed; inset:0; background:rgba(24,26,46,0.72); z-index:50; align-items:flex-end; justify-content:center; }
- .voice-overlay.open{ display:flex; }.voice-modal{ background:var(--paper); width:100%; max-width:640px; max-height:88vh; overflow-y:auto; border-radius:18px 18px 0 0; padding:0 0 20px; }
- .voice-modal-head{ position:sticky; top:0; background:var(--navy); color:#fff; padding:16px 18px; display:flex; align-items:center; justify-content:space-between; font-weight:600; }
+ .voice-overlay.open{ display:flex; }.voice-modal{ background:var(--paper); width:100%; max-width:640px; max-height:88vh; overflow-y:auto; border-radius:18px 18px 0 0; }
+ .voice-modal-head{ position:sticky; top:0; background:var(--navy); color:#fff; padding:16px 18px; display:flex; justify-content:space-between; }
  .voice-close{ background:none; border:none; color:#fff; font-size:18px; cursor:pointer; }.voice-body{ padding:18px; }.voice-prompt{ font-size:16px; font-weight:600; text-align:center; margin:4px 0 18px; }
- .voice-mic-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:16px; }.voice-mic{ width:76px;height:76px; border-radius:50%; border:none; background:#B4332A; color:#fff; font-size:30px; cursor:pointer; }
+ .voice-mic-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:16px; }.voice-mic{ width:76px;height:76px; border-radius:50%; border:none; background:var(--tomato); color:#fff; font-size:30px; cursor:pointer; }
  .voice-mic.listening{ background:#25D366; animation:pulse 1.1s infinite; } @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(37,211,102,0.5);} 70%{ box-shadow:0 0 0 16px rgba(37,211,102,0);} 100%{ box-shadow:0 0 0 0 rgba(37,211,102,0);} }
  .voice-status{ font-size:13px; color:var(--ink-soft); }.voice-transcript{ background:#fff; border:1.5px solid var(--line); border-radius:9px; padding:10px 13px; font-size:14.5px; margin-bottom:14px; }
- .voice-actions{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:16px; }.voice-actions button{ border:1.5px solid var(--line); background:#fff; padding:9px 14px; border-radius:9px; font-weight:600; cursor:pointer; }
- .voice-actions button.primary{ background:var(--palm); color:#fff; }.voice-manual{ background:rgba(31,75,63,0.06); border:1px dashed rgba(31,75,63,0.3); border-radius:10px; padding:12px; margin-bottom:16px; }
-  #voiceManualSelect{ width:100%; padding:9px 10px; border-radius:8px; border:1.5px solid var(--line); font-size:14px; margin-bottom:10px; background:#fff; }.voice-manual-row{ display:flex; align-items:center; gap:10px; }.voice-manual-add{ flex:1; background:#B4332A; color:#fff; border:none; border-radius:9px; padding:9px 10px; font-weight:700; cursor:pointer; }
- .voice-order-list{ font-size:13.5px; }.voice-order-item{ display:flex; justify-content:space-between; padding:6px 0; border-top:1px dashed var(--line); }.voice-order-item:first-child{ border-top:none; }
- .voice-total{ display:flex; justify-content:space-between; font-weight:800; font-size:16px; border-top:2px solid var(--ink); margin-top:8px; padding-top:10px; }
- .included-note{ display:flex; align-items:center; gap:8px; background: rgba(31,75,63,0.08); border:1px dashed rgba(31,75,63,0.35); color:#163A30; font-size:13px; padding:8px 12px; border-radius:9px; margin-bottom:14px; }
+ .voice-actions{ display:flex; gap:8px; justify-content:center; margin-bottom:16px; flex-wrap:wrap; }.voice-actions button{ border:1.5px solid var(--line); background:#fff; padding:9px 14px; border-radius:9px; font-weight:600; cursor:pointer; }.voice-actions button.primary{ background:var(--palm); color:#fff; }
+ .voice-manual{ background:rgba(31,75,63,0.06); border:1px dashed rgba(31,75,63,0.3); border-radius:10px; padding:12px; margin-bottom:16px; }
+  #voiceManualSelect{ width:100%; padding:9px 10px; border-radius:8px; border:1.5px solid var(--line); margin-bottom:10px; }.voice-manual-row{ display:flex; gap:10px; }.voice-manual-add{ flex:1; background:var(--tomato); color:#fff; border:none; border-radius:9px; padding:9px 10px; font-weight:700; cursor:pointer; }
+ .voice-order-list{ font-size:13.5px; }.voice-order-item{ display:flex; justify-content:space-between; padding:6px 0; border-top:1px dashed var(--line); }.voice-order-item:first-child{border-top:none;}.voice-total{ display:flex; justify-content:space-between; font-weight:800; font-size:16px; border-top:2px solid var(--ink); margin-top:8px; padding-top:10px; }
+ .included-note{ display:flex; gap:8px; background: rgba(31,75,63,0.08); border:1px dashed rgba(31,75,63,0.35); font-size:13px; padding:8px 12px; border-radius:9px; margin-bottom:14px; }
 </style>
 </head>
 <body>
-<div class="hero"><div class="wrap"><p>Restaurante · Sabor Caribe</p><h1>Don Platico</h1><p>Arma tu pedido, revisa el total y envíalo directo por WhatsApp.</p></div></div>
+<div class="hero"><div class="wrap"><h1>Don Platico</h1><p>Arma tu pedido, revisa el total y envíalo directo por WhatsApp. Realiza tu pedido con anticipación.</p></div></div>
 <div class="wrap">
   <section class="block">
     <div class="top-actions"><button type="button" class="ghost-btn" id="exitBtn">Salir</button><button type="button" class="ghost-btn ghost-btn-accent" id="quickMenuBtn">Sólo pedir el menú del día</button></div>
     <button type="button" class="voice-cta" id="voiceStartBtn">🎤 Hacer mi pedido por voz (habilitado para Android)</button>
     <h2>Tus datos</h2>
-    <label class="field">Nombre</label><input type="text" id="nombre" placeholder="Ej. Juan Pablo Durán">
-    <label class="field">Número</label><input type="text" id="telefono" placeholder="Ej. 300 123 4567" inputmode="tel">
-    <label class="field">Dirección</label><input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20">
+    <label class="field">Nombre de contacto</label><input type="text" id="nombre" placeholder="Ej. Juan Pablo Durán">
+    <label class="field">Número de contacto</label><input type="text" id="telefono" placeholder="Ej. 300 123 4567" inputmode="tel">
+    <label class="field">Dirección de entrega</label><input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20">
     <label class="field">Observaciones (opcional)</label><textarea id="observaciones" rows="3"></textarea>
   </section>
   <section class="block"><h2>Menú del día / ejecutivo</h2><div class="included-note">🥤 La aguapanela va incluida con el menú del día.</div><div id="menuDishes"></div><div class="item-row"><div class="item-info"><div class="item-name">Sopa con Arroz</div><div class="item-price">$9.000 c/u</div></div><div class="stepper" data-item="sopa" data-price="9000" data-name="Sopa con Arroz"><button type="button" data-action="minus">−</button><span class="qty">0</span><button type="button" data-action="plus">+</button></div></div></section>
   <section class="block"><h2>Especialidades a la carta</h2><div id="especialidades"></div></section>
   <section class="block"><h2>Adicionales</h2><div id="adicionales"></div></section>
   <section class="block"><h2>Bebidas</h2><div id="bebidas"></div></section>
-
   <section class="block"><h2>Seleccionar medio de pago</h2>
     <div class="pay-options">
-      <div class="pay-btn active" data-pay="Efectivo">
-        <span class="pay-line1">Pago en Efectivo</span>
-        <span class="pay-line2">Tengo la suma cerrada de $...</span>
-      </div>
-      <div class="pay-btn" data-pay="Transferencia NEQUI">
-        <span class="pay-line1">Pago por transferencia</span>
-        <span class="pay-line2">LLAVE o NEQUI: 3014885090</span>
-      </div>
+      <div class="pay-btn active" data-pay="Efectivo"><span class="pay-line1">Pago en Efectivo</span><span class="pay-line2">Tengo la suma cerrada de $...</span></div>
+      <div class="pay-btn" data-pay="Transferencia NEQUI"><span class="pay-line1">Pago por transferencia</span><span class="pay-line2">LLAVE o NEQUI: 3014885090</span></div>
     </div>
-    <div id="billeteWrap"><label class="field">¿Con qué billete pagas? (para llevar el cambio)</label><input type="text" id="billete" placeholder="Ej. $50.000"></div>
+    <div id="billeteWrap"><label class="field">¿Con qué billete pagas?</label><input type="text" id="billete" placeholder="Ej. $50.000"></div>
   </section>
-
   <section class="block"><h2>Resumen del pedido</h2><div id="summaryLines"></div><div id="emptyNote" class="empty-note">Aún no has agregado platos ni bebidas.</div></section>
-
   <div class="nequi-banner">Nequi Don Platico · 301 488 5090 · Pedidos con anticipación</div>
   <button type="button" class="exit-bottom" id="exitBottomBtn">Salir sin hacer pedido</button>
 </div>
-
 <div class="voice-overlay" id="voiceOverlay"><div class="voice-modal"><div class="voice-modal-head"><span id="voiceStepLabel">Pedido por voz</span><button type="button" class="voice-close" id="voiceCloseBtn">✕</button></div><div class="voice-body"><p class="voice-prompt" id="voicePrompt"></p><div class="voice-mic-wrap"><button type="button" class="voice-mic" id="voiceMicBtn">🎤</button><div class="voice-status" id="voiceStatus">Toca para hablar</div></div><div class="voice-transcript" id="voiceTranscript" style="display:none;"></div><div class="voice-actions" id="voiceStepActions"></div><div class="voice-manual" id="voiceManualPicker" style="display:none;"><select id="voiceManualSelect"></select><div class="voice-manual-row"><div class="stepper" id="voiceManualStepper"><button type="button" data-action="minus">−</button><span class="qty">1</span><button type="button" data-action="plus">+</button></div><button type="button" class="voice-manual-add" id="voiceManualAddBtn">Agregar</button></div></div><div class="voice-order-list" id="voiceOrderList"></div></div></div></div>
-<div class="sticky-cta"><div class="hint" id="disabledHint">Debes llenar tus datos completos para enviar tu orden...</div><button id="sendBtn" disabled>Enviar pedido por WhatsApp — <span id="ctaTotal">$0</span></button></div>
-
+<div class="sticky-cta"><div class="hint" id="disabledHint">Debes llenar tus datos completos para enviar tu orden... gracias</div><button id="sendBtn" disabled>Enviar pedido por WhatsApp — <span id="ctaTotal">$0</span></button></div>
 <script>
   const WHATSAPP_NUMBER="573178451450";
   function doExit(){ if(confirm("¿Seguro que quieres salir sin hacer tu pedido?")){ window.close(); setTimeout(()=>{ location.href="about:blank"; },300);} }
   document.getElementById("exitBtn").onclick=doExit; document.getElementById("exitBottomBtn").onclick=doExit;
-  document.getElementById("quickMenuBtn").onclick=()=>{ const url=`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("*Menú Don Platico* - Hola quiero pedir")}`; window.open(url,"_blank"); };
+  document.getElementById("quickMenuBtn").onclick=()=>{ window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("*Menú Don Platico*")}`,"_blank"); };
   const menuDiaData=[["Hígado en Bistec",19000],["Hígado Encebollado",19000],["Pollo Frito",19000],["Pollo Guisado",19000],["Pechuga Asada",19000],["Carne Asada",19000],["Chuleta Asada",19000],["Alitas BBQ",19000],["Lomo de Cerdo Asado",19000],["Salpicón de Pescado",19000],["Jurel en Zumo de Coco",19000]];
   const especialidadesData=[["Mojarra Marinera",55000],["Cazuela de Mariscos",55000],["Arroz de Mariscos",50000],["Mojarra en Zumo de Coco",45000],["Arroz con Camarones",40000],["Mojarra Frita",40000],["Coctel de Camarón",35000],["Pechuga en Salsa de Queso + Arroz Coco",30000],["Bistec a Caballo",26000]];
   const adicionalesData=[["Porción Papas",7000],["Porción Yuca Frita",7000],["Patacones",5000],["Tajadas",5000],["Granos",5000],["Ensalada",5000],["Porción Arroz de Coco",4000],["Porción Arroz Blanco",3000],["Cambio a Arroz de Coco",2000]];
   const bebidasData=[["Jugo en Leche",8000],["Jugo Natural en Agua",7000],["Jugo PET",4000],["Gaseosa",3500],["Bebida Adicional",1000]];
   function money(n){return "$"+n.toLocaleString("es-CO");}
-  function buildRows(container,data,prefix){ data.forEach(([name][price],idx)=>{ const row=document.createElement("div"); row.className="item-row"; row.innerHTML=`<div class="item-info"><div class="item-name">${name}</div><div class="item-price">${money(price)} c/u</div></div><div class="stepper" data-item="${prefix}${idx}" data-price="${price}" data-name="${name}"><button type="button" data-action="minus">−</button><span class="qty">0</span><button type="button" data-action="plus">+</button></div>`; container.appendChild(row); }); }
-  buildRows(document.getElementById("menuDishes"),menuDiaData,"dish"); buildRows(document.getElementById("especialidades"),especialidadesData,"esp"); buildRows(document.getElementById("adicionales"),adicionalesData,"adi"); buildRows(document.getElementById("bebidas"),bebidasData,"beb");
-  function adjustQty(key,delta){ const stepper=document.querySelector(`.stepper[data-item="${key}"]`); if(!stepper) return; const qtyEl=stepper.querySelector(".qty"); let qty=parseInt(qtyEl.textContent,10)+delta; qty=Math.max(0,qty); qtyEl.textContent=qty; render(); }
-  document.body.addEventListener("click",(e)=>{ const btn=e.target.closest(".stepper button"); if(!btn) return; const stepper=btn.closest(".stepper"); if(stepper.id==="voiceManualStepper") return; adjustQty(stepper.dataset.item, btn.dataset.action==="plus"?1:-1); });
-  let payMethod="Efectivo"; document.querySelectorAll(".pay-btn").forEach(b=>{ b.onclick=()=>{ document.querySelectorAll(".pay-btn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); payMethod=b.dataset.pay; document.getElementById("billeteWrap").style.display=payMethod==="Efectivo"?"block":"none"; render(); }; });
-  function getCart(){ const carts=[]; document.querySelectorAll(".stepper").forEach(s=>{ if(s.id==="voiceManualStepper") return; const q=parseInt(s.querySelector(".qty").textContent,10); if(q>0) carts.push({key:s.dataset.item, name:s.dataset.name, price:parseInt(s.dataset.price,10), qty:q}); }); return carts; }
-  function calcTotals(cart){ let subtotal=0; cart.forEach(i=>subtotal+=i.price*i.qty); const conRec=["Jugo en Leche","Jugo Natural en Agua"]; let rec=0; cart.forEach(it=>{ const esBeb=it.key.startsWith("beb") && conRec.includes(it.name); if(it.key.startsWith("adi")) return; if(it.key.startsWith("beb") &&!esBeb) return; rec+=(it.key==="sopa"?2000:1000)*it.qty; }); return {subtotal, recipientes:rec, total:subtotal+rec}; }
-  function render(){
-    const cart=getCart(); const {subtotal, recipientes, total}=calcTotals(cart);
-    const summaryEl=document.getElementById("summaryLines"); summaryEl.innerHTML="";
-    if(cart.length===0) document.getElementById("emptyNote").style.display="block";
-    else { document.getElementById("emptyNote").style.display="none"; cart.forEach(it=>{ const l=document.createElement("div"); l.className="summary-line"; l.innerHTML=`<span>${it.name} × ${it.qty}</span><span>${money(it.price*it.qty)}</span>`; summaryEl.appendChild(l); }); const r=document.createElement("div"); r.className="summary-line"; r.innerHTML=`<span>Recipientes (envoltura)</span><span>${money(recipientes)}</span>`; summaryEl.appendChild(r); const t=document.createElement("div"); t.className="summary-line total"; t.innerHTML=`<span>Total a pagar</span><span>${money(total)}</span>`; summaryEl.appendChild(t); }
-    document.getElementById("ctaTotal").textContent=money(total);
-    const nombre=document.getElementById("nombre").value.trim(), telefono=document.getElementById("telefono").value.trim(), direccion=document.getElementById("direccion").value.trim();
-    const can=cart.length>0 && nombre && telefono && direccion; document.getElementById("sendBtn").disabled=!can; document.getElementById("disabledHint").style.display=can?"none":"flex"; document.getElementById("sendBtn").style.display=can?"flex":"none";
-    return {cart,subtotal,recipientes,total};
+  function buildRows(container,data,prefix){
+    data.forEach(function(item, idx){
+      var name=item[0], price=item[1];
+      var row=document.createElement("div"); row.className="item-row";
+      row.innerHTML='<div class="item-info"><div class="item-name">'+name+'</div><div class="item-price">'+money(price)+' c/u</div></div><div class="stepper" data-item="'+prefix+idx+'" data-price="'+price+'" data-name="'+name+'"><button type="button" data-action="minus">−</button><span class="qty">0</span><button type="button" data-action="plus">+</button></div>';
+      container.appendChild(row);
+    });
   }
-  document.getElementById("nombre").addEventListener("input",render); document.getElementById("telefono").addEventListener("input",render); document.getElementById("direccion").addEventListener("input",render);
-  document.getElementById("sendBtn").onclick=()=>{ const {cart,subtotal,recipientes,total}=render(); const nombre=document.getElementById("nombre").value.trim(), telefono=document.getElementById("telefono").value.trim(), direccion=document.getElementById("direccion").value.trim(), obs=document.getElementById("observaciones").value.trim(), billete=document.getElementById("billete").value.trim(); let msg=`*Pedido Don Platico*\n\nNombre: ${nombre}\nTel: ${telefono}\nDir: ${direccion}\n\n*Pedido:*\n`; cart.forEach(i=>{ msg+=`- ${i.name} x${i.qty} — ${money(i.price*i.qty)}\n`; }); msg+=`\nSubtotal: ${money(subtotal)}\nRecipientes: ${money(recipientes)}\n*Total: ${money(total)}*\n\nPago: ${payMethod}\n`; if(billete) msg+=`Billete: ${billete}\n`; if(obs) msg+=`Obs: ${obs}\n`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,"_blank"); };
+  buildRows(document.getElementById("menuDishes"),menuDiaData,"dish");
+  buildRows(document.getElementById("especialidades"),especialidadesData,"esp");
+  buildRows(document.getElementById("adicionales"),adicionalesData,"adi");
+  buildRows(document.getElementById("bebidas"),bebidasData,"beb");
+  function adjustQty(key,delta){ var stepper=document.querySelector('.stepper[data-item="'+key+'"]'); if(!stepper) return; var qtyEl=stepper.querySelector(".qty"); var qty=parseInt(qtyEl.textContent,10)+delta; qty=Math.max(0,qty); qtyEl.textContent=qty; render(); }
+  document.body.addEventListener("click",function(e){ var btn=e.target.closest(".stepper button"); if(!btn) return; var stepper=btn.closest(".stepper"); if(stepper.id==="voiceManualStepper") return; adjustQty(stepper.dataset.item, btn.dataset.action==="plus"?1:-1); });
+  var payMethod="Efectivo"; document.querySelectorAll(".pay-btn").forEach(function(b){ b.onclick=function(){ document.querySelectorAll(".pay-btn").forEach(function(x){x.classList.remove("active")}); b.classList.add("active"); payMethod=b.dataset.pay; document.getElementById("billeteWrap").style.display=payMethod==="Efectivo"?"block":"none"; render(); }; });
+  function getCart(){ var carts=[]; document.querySelectorAll(".stepper").forEach(function(s){ if(s.id==="voiceManualStepper") return; var q=parseInt(s.querySelector(".qty").textContent,10); if(q>0) carts.push({key:s.dataset.item, name:s.dataset.name, price:parseInt(s.dataset.price,10), qty:q}); }); return carts; }
+  function calcTotals(cart){ var subtotal=0; cart.forEach(function(i){subtotal+=i.price*i.qty}); var conRec=["Jugo en Leche","Jugo Natural en Agua"]; var rec=0; cart.forEach(function(it){ var esBeb=it.key.indexOf("beb")===0 && conRec.indexOf(it.name)!==-1; if(it.key.indexOf("adi")===0) return; if(it.key.indexOf("beb")===0 &&!esBeb) return; rec+=(it.key==="sopa"?2000:1000)*it.qty; }); return {subtotal:subtotal, recipientes:rec, total:subtotal+rec}; }
+  function render(){
+    var cart=getCart(); var t=calcTotals(cart);
+    var summaryEl=document.getElementById("summaryLines"); summaryEl.innerHTML="";
+    if(cart.length===0) document.getElementById("emptyNote").style.display="block";
+    else { document.getElementById("emptyNote").style.display="none"; cart.forEach(function(it){ var l=document.createElement("div"); l.className="summary-line"; l.innerHTML='<span>'+it.name+' × '+it.qty+'</span><span>'+money(it.price*it.qty)+'</span>'; summaryEl.appendChild(l); }); var r=document.createElement("div"); r.className="summary-line"; r.innerHTML='<span>Recipientes (envoltura)</span><span>'+money(t.recipientes)+'</span>'; summaryEl.appendChild(r); var tot=document.createElement("div"); tot.className="summary-line total"; tot.innerHTML='<span>Total a pagar</span><span>'+money(t.total)+'</span>'; summaryEl.appendChild(tot); }
+    document.getElementById("ctaTotal").textContent=money(t.total);
+    var nombre=document.getElementById("nombre").value.trim(), telefono=document.getElementById("telefono").value.trim(), direccion=document.getElementById("direccion").value.trim();
+    var can=cart.length>0 && nombre && telefono && direccion; document.getElementById("sendBtn").disabled=!can; document.getElementById("disabledHint").style.display=can?"none":"flex"; document.getElementById("sendBtn").style.display=can?"flex":"none";
+    return {cart:cart, subtotal:t.subtotal, recipientes:t.recipientes, total:t.total};
+  }
+  document.getElementById("nombre").addEventListener("input",render); document.getElementById("telefono").addEventListener("input",render); document.getElementById("direccion").addEventListener("input",render); document.getElementById("billete").addEventListener("input",render);
+  document.getElementById("sendBtn").onclick=function(){ var d=render(); var nombre=document.getElementById("nombre").value.trim(), telefono=document.getElementById("telefono").value.trim(), direccion=document.getElementById("direccion").value.trim(), obs=document.getElementById("observaciones").value.trim(), billete=document.getElementById("billete").value.trim(); var msg='*Pedido Don Platico*\n\nNombre: '+nombre+'\nTel: '+telefono+'\nDir: '+direccion+'\n\n*Pedido:*\n'; d.cart.forEach(function(i){ msg+='- '+i.name+' x'+i.qty+' — '+money(i.price*i.qty)+'\n'; }); msg+='\nSubtotal: '+money(d.subtotal)+'\nRecipientes: '+money(d.recipientes)+'\n*Total: '+money(d.total)+'*\n\nPago: '+payMethod+'\n'; if(billete) msg+='Billete: '+billete+'\n'; if(obs) msg+='Obs: '+obs+'\n'; window.open('https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(msg),"_blank"); };
 
   // VOZ 2 PASOS
-  const SpeechRecognitionCtor=window.SpeechRecognition||window.webkitSpeechRecognition, speechSupported=!!SpeechRecognitionCtor;
-  const voiceItems=[...menuDiaData.map(([n][p],i)=>({key:`dish${i}`,name:n,price:p})), {key:"sopa",name:"Sopa con Arroz",price:9000},...especialidadesData.map(([n,p],i)=>({key:`esp${i}`,name:n,price:p}))];
-  const numeroPalabras={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,cero:0};
+  var SpeechRecognitionCtor=window.SpeechRecognition||window.webkitSpeechRecognition, speechSupported=!!SpeechRecognitionCtor;
+  var voiceItems=[].concat(menuDiaData.map(function(n,i){return {key:'dish'+i,name:n[0],price:n[1]}}), [{key:"sopa",name:"Sopa con Arroz",price:9000}]).concat(especialidadesData.map(function(n,i){return {key:'esp'+i,name:n[0],price:n[1]}}));
+  var numeroPalabras={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,cero:0};
   function normalizarTexto(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s]/g,"").trim();}
-  function palabrasANumeros(t){ const d=t.replace(/\D/g,''); if(d.length>=7) return d.slice(0,10); let dig=""; normalizarTexto(t).split(/\s+/).forEach(w=>{ if(/^\d+$/.test(w)) dig+=w; else if(numeroPalabras[w]!==undefined) dig+=numeroPalabras[w]; }); return dig.length>=7?dig:t.trim(); }
-  function extraerCantidad(tn){ const clean=normalizarTexto(tn); for(const w of clean.split(/\s+/)){ if(numeroPalabras[w]) return numeroPalabras[w]; if(/^\d+$/.test(w)) return parseInt(w,10); } const m=tn.match(/\d+/); if(m) return parseInt(m[0],10); return 1; }
-  function encontrarPlato(tr){ const tn=normalizarTexto(tr); let mejor=null,sc=0; voiceItems.forEach(it=>{ const nn=normalizarTexto(it.name); const pals=nn.split(/\s+/).filter(x=>!["en","de","con","y","a","la","el"].includes(x)); const co=pals.filter(w=>tn.includes(w)).length; const s=pals.length?co/pals.length:0; if(s>sc){sc=s; mejor=it;} }); return (mejor&&sc>=0.35)?{item:mejor}:null; }
-  const voiceManualSelect=document.getElementById("voiceManualSelect"); voiceManualSelect.innerHTML=''; voiceItems.forEach(it=>{ const o=document.createElement("option"); o.value=it.key; o.textContent=`${it.name} — ${money(it.price)}`; voiceManualSelect.appendChild(o); });
-  let voiceStep="nombre", failCount=0, pendingDish=null;
-  const voiceOverlay=document.getElementById("voiceOverlay"), voicePrompt=document.getElementById("voicePrompt"), voiceStepLabel=document.getElementById("voiceStepLabel"), voiceStatus=document.getElementById("voiceStatus"), voiceMicBtn=document.getElementById("voiceMicBtn"), voiceTranscript=document.getElementById("voiceTranscript"), voiceStepActions=document.getElementById("voiceStepActions"), voiceManualPicker=document.getElementById("voiceManualPicker"), voiceOrderList=document.getElementById("voiceOrderList");
-  function speak(t){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang="es-CO"; u.rate=0.95; speechSynthesis.speak(u);}catch(e){} }
-  function listenOnce(){ return new Promise((resolve,reject)=>{ if(!speechSupported) return reject("unsupported"); const rec=new SpeechRecognitionCtor(); rec.lang="es-CO"; rec.interimResults=false; rec.continuous=false; let timeout; rec.onstart=()=>{ voiceMicBtn.classList.add("listening"); voiceStatus.textContent="Escuchando..."; timeout=setTimeout(()=>{ try{rec.stop();}catch(e){}},7000); }; rec.onresult=e=>{ clearTimeout(timeout); resolve(e.results[0][0].transcript.trim()); }; rec.onerror=e=>{ clearTimeout(timeout); voiceMicBtn.classList.remove("listening"); reject(e.error); }; rec.onend=()=>{ clearTimeout(timeout); voiceMicBtn.classList.remove("listening"); }; try{ setTimeout(()=>rec.start(),150); }catch(err){ reject(err.message); } }); }
+  function palabrasANumeros(t){ var d=t.replace(/\D/g,''); if(d.length>=7) return d.slice(0,10); var dig=""; normalizarTexto(t).split(/\s+/).forEach(function(w){ if(/^\d+$/.test(w)) dig+=w; else if(numeroPalabras[w]!==undefined) dig+=numeroPalabras[w]; }); return dig.length>=7?dig:t.trim(); }
+  function extraerCantidad(tn){ var clean=normalizarTexto(tn); var parts=clean.split(/\s+/); for(var i=0;i<parts.length;i++){ var w=parts[i]; if(numeroPalabras[w]) return numeroPalabras[w]; if(/^\d+$/.test(w)) return parseInt(w,10); } var m=tn.match(/\d+/); if(m) return parseInt(m[0],10); return 1; }
+  function encontrarPlato(tr){ var tn=normalizarTexto(tr); var mejor=null,sc=0; voiceItems.forEach(function(it){ var nn=normalizarTexto(it.name); var pals=nn.split(/\s+/).filter(function(x){return ["en","de","con","y","a","la","el"].indexOf(x)===-1}); var co=0; pals.forEach(function(w){ if(tn.indexOf(w)!==-1) co++; }); var s=pals.length?co/pals.length:0; if(s>sc){sc=s; mejor=it;} }); return (mejor&&sc>=0.35)?{item:mejor}:null; }
+  var voiceManualSelect=document.getElementById("voiceManualSelect"); voiceManualSelect.innerHTML=''; voiceItems.forEach(function(it){ var o=document.createElement("option"); o.value=it.key; o.textContent=it.name+' — '+money(it.price); voiceManualSelect.appendChild(o); });
+  var voiceStep="nombre", failCount=0, pendingDish=null;
+  var voiceOverlay=document.getElementById("voiceOverlay"), voicePrompt=document.getElementById("voicePrompt"), voiceStepLabel=document.getElementById("voiceStepLabel"), voiceStatus=document.getElementById("voiceStatus"), voiceMicBtn=document.getElementById("voiceMicBtn"), voiceTranscript=document.getElementById("voiceTranscript"), voiceStepActions=document.getElementById("voiceStepActions"), voiceManualPicker=document.getElementById("voiceManualPicker"), voiceOrderList=document.getElementById("voiceOrderList");
+  function speak(t){ try{ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang="es-CO"; u.rate=0.95; speechSynthesis.speak(u);}catch(e){} }
+  function listenOnce(){ return new Promise(function(resolve,reject){ if(!speechSupported) return reject("unsupported"); var rec=new SpeechRecognitionCtor(); rec.lang="es-CO"; rec.interimResults=false; rec.continuous=false; var timeout; rec.onstart=function(){ voiceMicBtn.classList.add("listening"); voiceStatus.textContent="Escuchando..."; timeout=setTimeout(function(){ try{rec.stop();}catch(e){}},7000); }; rec.onresult=function(e){ clearTimeout(timeout); resolve(e.results[0][0].transcript.trim()); }; rec.onerror=function(e){ clearTimeout(timeout); voiceMicBtn.classList.remove("listening"); reject(e.error); }; rec.onend=function(){ clearTimeout(timeout); voiceMicBtn.classList.remove("listening"); }; try{ setTimeout(function(){rec.start()},150); }catch(err){ reject(err.message); } }); }
   function renderVoiceOrderList(){
-    const cart=getCart();
-    const {recipientes, total}=calcTotals(cart);
-    if(cart.length===0){ voiceOrderList.innerHTML=`<p style="color:#6B5D4F;font-size:12.5px">Aún no has agregado platos.</p>`; return; }
-    let html=cart.map(it=>`<div class="voice-order-item"><span>${it.name} × ${it.qty}</span><span>${money(it.price*it.qty)}</span></div>`).join("");
-    html+=`<div class="voice-order-item"><span>Recipientes (envoltura)</span><span>${money(recipientes)}</span></div>`;
-    html+=`<div class="voice-total"><span>Total a pagar</span><span>${money(total)}</span></div>`;
+    var cart=getCart();
+    var tt=calcTotals(cart);
+    if(cart.length===0){ voiceOrderList.innerHTML='<p style="color:#6B5D4F;font-size:12.5px">Aún no has agregado platos.</p>'; return; }
+    var html=''; cart.forEach(function(it){ html+='<div class="voice-order-item"><span>'+it.name+' × '+it.qty+'</span><span>'+money(it.price*it.qty)+'</span></div>'; });
+    html+='<div class="voice-order-item"><span>Recipientes</span><span>'+money(tt.recipientes)+'</span></div>';
+    html+='<div class="voice-total"><span>Total a pagar</span><span>'+money(tt.total)+'</span></div>';
     voiceOrderList.innerHTML=html;
   }
   function setVoiceStep(step){
@@ -153,26 +150,25 @@
     if(step==="nombre"){ voiceStepLabel.textContent="Paso 1 de 4 · Nombre"; voicePrompt.textContent="Toca el micrófono y dime tu nombre completo."; speak("Dime tu nombre completo"); renderVoiceOrderList(); }
     else if(step==="telefono"){ voiceStepLabel.textContent="Paso 2 de 4 · Teléfono"; voicePrompt.textContent="Ahora tu número, dígito por dígito."; speak("Dime tu número"); }
     else if(step==="direccion"){ voiceStepLabel.textContent="Paso 3 de 4 · Dirección"; voicePrompt.textContent="Dime la dirección de entrega."; speak("Dime tu dirección"); }
-    else if(step==="platos"){ voiceStepLabel.textContent="Paso 4 de 4 · Platos"; voicePrompt.textContent="Dime el plato. Ej: Pollo Frito"; speak("Dime qué plato quieres"); renderVoiceOrderList(); voiceStepActions.innerHTML=`<button type="button" class="primary" id="voiceFinishBtn">Ya terminé, ver resumen</button>`; document.getElementById("voiceFinishBtn").onclick=()=>setVoiceStep("resumen"); }
-    else if(step==="platos_cantidad"){ voiceStepLabel.textContent=`¿Cuántos?`; voicePrompt.innerHTML=`Quieres <b>${pendingDish.name}</b><br>¿Cuántos? Di: uno, dos...`; speak(`¿Cuántos ${pendingDish.name} quieres?`); }
-    else if(step==="resumen"){ voiceStepLabel.textContent="Resumen"; voiceMicBtn.style.display="none"; const n=document.getElementById("nombre").value||"(sin nombre)", t=document.getElementById("telefono").value||"(sin teléfono)", d=document.getElementById("direccion").value||"(sin dirección)"; voicePrompt.innerHTML=`<strong>${n}</strong><br>${t}<br>${d}`; renderVoiceOrderList(); voiceStepActions.innerHTML=`<button type="button" id="voiceBackBtn">Agregar otro plato</button><button type="button" class="primary" id="voiceContinueBtn">Continuar y enviar</button>`; document.getElementById("voiceBackBtn").onclick=()=>setVoiceStep("platos"); document.getElementById("voiceContinueBtn").onclick=()=>{ voiceOverlay.classList.remove("open"); }; }
+    else if(step==="platos"){ voiceStepLabel.textContent="Paso 4 de 4 · Platos"; voicePrompt.textContent="Dime el plato. Ej: Pollo Frito"; speak("Dime qué plato quieres"); renderVoiceOrderList(); voiceStepActions.innerHTML='<button type="button" class="primary" id="voiceFinishBtn">Ya terminé, ver resumen</button>'; document.getElementById("voiceFinishBtn").onclick=function(){ setVoiceStep("resumen"); }; }
+    else if(step==="platos_cantidad"){ voiceStepLabel.textContent="¿Cuántos?"; voicePrompt.innerHTML='Quieres <b>'+pendingDish.name+'</b><br>¿Cuántos? Di: uno, dos...'; speak('¿Cuántos '+pendingDish.name+' quieres?'); }
+    else if(step==="resumen"){ voiceStepLabel.textContent="Resumen"; voiceMicBtn.style.display="none"; var n=document.getElementById("nombre").value||"(sin nombre)", t2=document.getElementById("telefono").value||"(sin teléfono)", d=document.getElementById("direccion").value||"(sin dirección)"; voicePrompt.innerHTML='<strong>'+n+'</strong><br>'+t2+'<br>'+d; renderVoiceOrderList(); voiceStepActions.innerHTML='<button type="button" id="voiceBackBtn">Agregar otro plato</button><button type="button" class="primary" id="voiceContinueBtn">Continuar y enviar</button>'; document.getElementById("voiceBackBtn").onclick=function(){ setVoiceStep("platos"); }; document.getElementById("voiceContinueBtn").onclick=function(){ voiceOverlay.classList.remove("open"); }; }
   }
   function handleVoiceResult(tr){
-    voiceTranscript.style.display="block"; voiceTranscript.textContent=`Escuché: "${tr}"`; failCount=0;
-    if(voiceStep==="nombre"){ if(tr.length<2) return; document.getElementById("nombre").value=tr.trim(); document.getElementById("nombre").dispatchEvent(new Event('input',{bubbles:true})); render(); setTimeout(()=>setVoiceStep("telefono"),600); }
-    else if(voiceStep==="telefono"){ const tel=palabrasANumeros(tr); document.getElementById("telefono").value=tel; document.getElementById("telefono").dispatchEvent(new Event('input',{bubbles:true})); render(); if(tel.replace(/\D/g,'').length>=7) setTimeout(()=>setVoiceStep("direccion"),600); }
-    else if(voiceStep==="direccion"){ document.getElementById("direccion").value=tr.trim(); document.getElementById("direccion").dispatchEvent(new Event('input',{bubbles:true})); render(); setTimeout(()=>setVoiceStep("platos"),600); }
-    else if(voiceStep==="platos"){ const m=encontrarPlato(tr); if(m){ pendingDish=m.item; voiceTranscript.textContent=`Plato: ${m.item.name}. Ahora dime cantidad.`; setTimeout(()=>setVoiceStep("platos_cantidad"),800); } else { voiceTranscript.textContent=`No identifiqué "${tr}".`; } }
-    else if(voiceStep==="platos_cantidad"){ let qty=extraerCantidad(tr); if(qty<1) qty=1; if(qty>20) qty=20; adjustQty(pendingDish.key, qty); voiceTranscript.textContent=`Agregado: ${qty} × ${pendingDish.name} ✅`; speak(`Agregué ${qty}`); pendingDish=null; setTimeout(()=>setVoiceStep("platos"),1200); }
+    voiceTranscript.style.display="block"; voiceTranscript.textContent='Escuché: "'+tr+'"'; failCount=0;
+    if(voiceStep==="nombre"){ if(tr.length<2) return; document.getElementById("nombre").value=tr.trim(); document.getElementById("nombre").dispatchEvent(new Event('input',{bubbles:true})); render(); setTimeout(function(){setVoiceStep("telefono")},600); }
+    else if(voiceStep==="telefono"){ var tel=palabrasANumeros(tr); document.getElementById("telefono").value=tel; document.getElementById("telefono").dispatchEvent(new Event('input',{bubbles:true})); render(); if(tel.replace(/\D/g,'').length>=7) setTimeout(function(){setVoiceStep("direccion")},600); }
+    else if(voiceStep==="direccion"){ document.getElementById("direccion").value=tr.trim(); document.getElementById("direccion").dispatchEvent(new Event('input',{bubbles:true})); render(); setTimeout(function(){setVoiceStep("platos")},600); }
+    else if(voiceStep==="platos"){ var m=encontrarPlato(tr); if(m){ pendingDish=m.item; voiceTranscript.textContent='Plato: '+m.item.name+'. Ahora dime cantidad.'; setTimeout(function(){setVoiceStep("platos_cantidad")},800); } else { voiceTranscript.textContent='No identifiqué "'+tr+'".'; } }
+    else if(voiceStep==="platos_cantidad"){ var qty=extraerCantidad(tr); if(qty<1) qty=1; if(qty>20) qty=20; adjustQty(pendingDish.key, qty); voiceTranscript.textContent='Agregado: '+qty+' × '+pendingDish.name+' ✅'; speak('Agregué '+qty); pendingDish=null; setTimeout(function(){setVoiceStep("platos")},1200); }
   }
-  voiceMicBtn.addEventListener("click", async()=>{
+  voiceMicBtn.addEventListener("click", function(){
     if(!speechSupported){ voiceTranscript.style.display="block"; voiceTranscript.textContent="Usa Chrome Android."; return; }
     voiceTranscript.style.display="none";
-    try{ const tr=await listenOnce(); handleVoiceResult(tr); }
-    catch(err){ failCount++; voiceTranscript.style.display="block"; voiceMicBtn.classList.remove("listening"); voiceStatus.textContent="Toca para hablar"; voiceTranscript.textContent="No te escuché. Toca y habla fuerte."; }
+    listenOnce().then(function(tr){ handleVoiceResult(tr); }).catch(function(err){ failCount++; voiceTranscript.style.display="block"; voiceMicBtn.classList.remove("listening"); voiceStatus.textContent="Toca para hablar"; voiceTranscript.textContent="No te escuché. Toca y habla fuerte."; });
   });
-  document.getElementById("voiceManualAddBtn").onclick=()=>{ const k=voiceManualSelect.value; const qEl=document.querySelector("#voiceManualStepper.qty"); const q=parseInt(qEl.textContent,10); adjustQty(k,q); renderVoiceOrderList(); qEl.textContent="1"; };
-  document.getElementById("voiceManualStepper").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const qEl=document.querySelector("#voiceManualStepper.qty"); let q=parseInt(qEl.textContent,10); q=b.dataset.action==="plus"?q+1:Math.max(1,q-1); qEl.textContent=q; });
+  document.getElementById("voiceManualAddBtn").onclick=function(){ var k=voiceManualSelect.value; var qEl=document.querySelector("#voiceManualStepper.qty"); var q=parseInt(qEl.textContent,10); adjustQty(k,q); renderVoiceOrderList(); qEl.textContent="1"; };
+  document.getElementById("voiceManualStepper").addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; var qEl=document.querySelector("#voiceManualStepper.qty"); var q=parseInt(qEl.textContent,10); q=b.dataset.action==="plus"?q+1:Math.max(1,q-1); qEl.textContent=q; });
   function openVoiceModal(){ voiceOverlay.classList.add("open"); setVoiceStep("nombre"); }
   function closeVoiceModal(){ voiceOverlay.classList.remove("open"); try{speechSynthesis.cancel();}catch(e){} }
   document.getElementById("voiceStartBtn").onclick=openVoiceModal; document.getElementById("voiceCloseBtn").onclick=closeVoiceModal;

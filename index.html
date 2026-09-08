@@ -337,6 +337,178 @@
     color: #000;
     flex:1;
   }
+
+  /* Pedido guiado por voz */
+  .voice-cta{
+    width:100%;
+    background: linear-gradient(135deg, var(--palm), var(--palm-deep));
+    color:#fff;
+    border:none;
+    border-radius:11px;
+    padding:14px 16px;
+    font-family:'Work Sans',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-bottom:18px;
+  }
+
+  .voice-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background: rgba(24,26,46,0.72);
+    z-index: 50;
+    align-items:flex-end;
+    justify-content:center;
+  }
+  .voice-overlay.open{ display:flex; }
+  .voice-modal{
+    background: var(--paper);
+    width:100%;
+    max-width: 640px;
+    max-height: 88vh;
+    overflow-y:auto;
+    border-radius: 18px 18px 0 0;
+    padding: 0 0 20px;
+  }
+  .voice-modal-head{
+    position:sticky;
+    top:0;
+    background: var(--navy);
+    color:#fff;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-family:'Fraunces',serif;
+    font-size:17px;
+    font-weight:600;
+    border-radius: 18px 18px 0 0;
+  }
+  .voice-close{
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+  }
+  .voice-body{ padding: 18px; }
+  .voice-prompt{
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    text-align:center;
+    margin: 4px 0 18px;
+  }
+  .voice-mic-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 16px;
+  }
+  .voice-mic{
+    width:76px;height:76px;
+    border-radius:50%;
+    border:none;
+    background: var(--tomato);
+    color:#fff;
+    font-size:30px;
+    cursor:pointer;
+    box-shadow: 0 4px 14px rgba(180,51,42,0.35);
+  }
+  .voice-mic.listening{
+    background: #25D366;
+    animation: pulse 1.1s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+    70%{ box-shadow: 0 0 0 16px rgba(37,211,102,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+  }
+  .voice-status{
+    font-size:13px;
+    color: var(--ink-soft);
+  }
+  .voice-transcript{
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    padding:10px 13px;
+    font-size:14.5px;
+    margin-bottom:14px;
+  }
+  .voice-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-bottom: 16px;
+  }
+  .voice-actions button{
+    border:1.5px solid var(--line);
+    background:#fff;
+    padding:9px 14px;
+    border-radius:9px;
+    font-family:inherit;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+  }
+  .voice-actions button.primary{
+    background: var(--palm);
+    border-color: var(--palm);
+    color:#fff;
+  }
+  .voice-manual{
+    background: rgba(31,75,63,0.06);
+    border:1px dashed rgba(31,75,63,0.3);
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:16px;
+  }
+  .voice-manual-label{
+    font-size:12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+  #voiceManualSelect{
+    width:100%;
+    padding:9px 10px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+    font-family:inherit;
+    font-size:14px;
+    margin-bottom:10px;
+    background:#fff;
+  }
+  .voice-manual-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .voice-manual-add{
+    flex:1;
+    background: var(--tomato);
+    color:#fff;
+    border:none;
+    border-radius:9px;
+    padding:9px 10px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .voice-order-list{
+    font-size:13.5px;
+  }
+  .voice-order-item{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    border-top:1px dashed var(--line);
+  }
+  .voice-order-item:first-child{ border-top:none; }
 </style>
 </head>
 <body>
@@ -357,6 +529,7 @@
       <button type="button" class="ghost-btn" id="exitBtn">Salir</button>
       <button type="button" class="ghost-btn ghost-btn-accent" id="quickMenuBtn">Sólo pedir el menú del día</button>
     </div>
+    <button type="button" class="voice-cta" id="voiceStartBtn">🎤 Hacer mi pedido por voz (habilitado para Android)</button>
     <h2>Tus datos</h2>
     <p class="block-note">Los necesitamos para preparar y entregar tu pedido.</p>
     <label class="field" for="nombre">Nombre de contacto</label>
@@ -438,6 +611,45 @@
   </section>
 
   <footer class="foot">Nequi Don Platico · 301 488 5090 · Pedidos con anticipación</footer>
+</div>
+
+<!-- Modal: pedido guiado por voz -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-modal">
+    <div class="voice-modal-head">
+      <span id="voiceStepLabel">Pedido por voz</span>
+      <button type="button" class="voice-close" id="voiceCloseBtn">✕</button>
+    </div>
+
+    <div class="voice-body">
+      <p class="voice-prompt" id="voicePrompt">Toca el micrófono y dime tu nombre completo.</p>
+
+      <div class="voice-mic-wrap">
+        <button type="button" class="voice-mic" id="voiceMicBtn">🎤</button>
+        <div class="voice-status" id="voiceStatus">Toca para hablar</div>
+      </div>
+
+      <div class="voice-transcript" id="voiceTranscript" style="display:none;"></div>
+
+      <div class="voice-actions" id="voiceStepActions"></div>
+
+      <!-- Selector manual de respaldo (por si la voz no se entiende) -->
+      <div class="voice-manual" id="voiceManualPicker" style="display:none;">
+        <p class="voice-manual-label">¿No se escuchó bien? Elige manualmente:</p>
+        <select id="voiceManualSelect"></select>
+        <div class="voice-manual-row">
+          <div class="stepper" id="voiceManualStepper">
+            <button type="button" data-action="minus">−</button>
+            <span class="qty">1</span>
+            <button type="button" data-action="plus">+</button>
+          </div>
+          <button type="button" class="voice-manual-add" id="voiceManualAddBtn">Agregar</button>
+        </div>
+      </div>
+
+      <div class="voice-order-list" id="voiceOrderList"></div>
+    </div>
+  </div>
 </div>
 
 <div class="sticky-cta">
@@ -566,17 +778,23 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
   buildRows(document.getElementById("bebidas"), bebidasData, "beb");
 
   // steppers
+  function adjustQty(key, delta){
+    const stepper = document.querySelector(`.stepper[data-item="${key}"]`);
+    if(!stepper) return null;
+    const qtyEl = stepper.querySelector(".qty");
+    let qty = parseInt(qtyEl.textContent, 10) + delta;
+    qty = Math.max(0, qty);
+    qtyEl.textContent = qty;
+    render();
+    return qty;
+  }
+
   document.body.addEventListener("click", (e) => {
     const btn = e.target.closest(".stepper button");
     if(!btn) return;
     const stepper = btn.closest(".stepper");
-    const qtyEl = stepper.querySelector(".qty");
-    let qty = parseInt(qtyEl.textContent, 10);
-
-    if(btn.dataset.action === "plus") qty++;
-    if(btn.dataset.action === "minus") qty = Math.max(0, qty - 1);
-    qtyEl.textContent = qty;
-    render();
+    const delta = btn.dataset.action === "plus" ? 1 : -1;
+    adjustQty(stepper.dataset.item, delta);
   });
 
   // pago
@@ -699,6 +917,254 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
   });
+
+  // ===================== PEDIDO GUIADO POR VOZ =====================
+  const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const speechSupported = !!SpeechRecognitionCtor;
+
+  // Lista de platos que se pueden pedir por voz: menú del día + sopa + especialidades
+  const voiceItems = [
+    ...menuDiaData.map(([name, price], i) => ({ key: `dish${i}`, name, price })),
+    { key: "sopa", name: "Sopa con Arroz", price: 9000 },
+    ...especialidadesData.map(([name, price], i) => ({ key: `esp${i}`, name, price })),
+  ];
+
+  const numeroPalabras = {
+    "un":1,"uno":1,"una":1,"dos":2,"tres":3,"cuatro":4,"cinco":5,
+    "seis":6,"siete":7,"ocho":8,"nueve":9,"diez":10
+  };
+
+  function normalizarTexto(str){
+    return str.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s]/g, "")
+      .trim();
+  }
+
+  function extraerCantidad(textoNorm){
+    const tokens = textoNorm.split(/\s+/);
+    for(const t of tokens){
+      if(numeroPalabras[t]) return numeroPalabras[t];
+      if(/^\d+$/.test(t)) return parseInt(t, 10);
+    }
+    return 1;
+  }
+
+  function encontrarPlato(transcript){
+    const textoNorm = normalizarTexto(transcript);
+    let mejor = null, mejorScore = 0;
+    voiceItems.forEach(item => {
+      const nombreNorm = normalizarTexto(item.name);
+      const palabras = nombreNorm.split(/\s+/).filter(w => !["en","de","con","y","a","la","el"].includes(w));
+      if(palabras.length === 0) return;
+      const coincididas = palabras.filter(w => textoNorm.includes(w)).length;
+      const score = coincididas / palabras.length;
+      if(score > mejorScore){
+        mejorScore = score;
+        mejor = item;
+      }
+    });
+    if(mejor && mejorScore >= 0.6){
+      return { item: mejor, qty: extraerCantidad(textoNorm) };
+    }
+    return null;
+  }
+
+  // Poblar el selector manual de respaldo
+  const voiceManualSelect = document.getElementById("voiceManualSelect");
+  voiceItems.forEach(item => {
+    const opt = document.createElement("option");
+    opt.value = item.key;
+    opt.textContent = `${item.name} — ${money(item.price)}`;
+    voiceManualSelect.appendChild(opt);
+  });
+
+  let voiceStep = "nombre"; // nombre -> telefono -> direccion -> platos -> resumen
+  const voiceOverlay = document.getElementById("voiceOverlay");
+  const voicePrompt = document.getElementById("voicePrompt");
+  const voiceStepLabel = document.getElementById("voiceStepLabel");
+  const voiceStatus = document.getElementById("voiceStatus");
+  const voiceMicBtn = document.getElementById("voiceMicBtn");
+  const voiceTranscript = document.getElementById("voiceTranscript");
+  const voiceStepActions = document.getElementById("voiceStepActions");
+  const voiceManualPicker = document.getElementById("voiceManualPicker");
+  const voiceOrderList = document.getElementById("voiceOrderList");
+
+  function speak(text){
+    try{
+      if(!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-CO";
+      window.speechSynthesis.speak(u);
+    }catch(e){ /* silencioso: la voz es un extra, no bloquea el flujo */ }
+  }
+
+  function listenOnce(){
+    return new Promise((resolve, reject) => {
+      if(!speechSupported){ reject("unsupported"); return; }
+      let settled = false;
+      const rec = new SpeechRecognitionCtor();
+      rec.lang = "es-CO";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.onresult = (e) => {
+        settled = true;
+        resolve(e.results[0][0].transcript);
+      };
+      rec.onerror = (e) => {
+        if(!settled){ settled = true; reject(e.error); }
+      };
+      rec.onend = () => {
+        if(!settled){ settled = true; reject("no-speech"); }
+      };
+      rec.start();
+    });
+  }
+
+  function renderVoiceOrderList(){
+    const items = voiceItems.filter(vi => {
+      const stepper = document.querySelector(`.stepper[data-item="${vi.key}"]`);
+      return stepper && parseInt(stepper.querySelector(".qty").textContent, 10) > 0;
+    });
+    if(items.length === 0){
+      voiceOrderList.innerHTML = `<p class="voice-manual-label">Aún no has agregado platos.</p>`;
+      return;
+    }
+    voiceOrderList.innerHTML = items.map(vi => {
+      const qty = document.querySelector(`.stepper[data-item="${vi.key}"] .qty`).textContent;
+      return `<div class="voice-order-item"><span>${vi.name} × ${qty}</span><span>${money(vi.price * qty)}</span></div>`;
+    }).join("");
+  }
+
+  function setVoiceStep(step){
+    voiceStep = step;
+    voiceTranscript.style.display = "none";
+    voiceTranscript.textContent = "";
+    voiceManualPicker.style.display = "none";
+    voiceStepActions.innerHTML = "";
+    voiceMicBtn.style.display = "inline-block";
+    voiceStatus.textContent = "Toca para hablar";
+
+    if(step === "nombre"){
+      voiceStepLabel.textContent = "Paso 1 de 4 · Nombre";
+      voicePrompt.textContent = "Toca el micrófono y dime tu nombre completo.";
+      speak("Toca el micrófono y dime tu nombre completo.");
+    } else if(step === "telefono"){
+      voiceStepLabel.textContent = "Paso 2 de 4 · Teléfono";
+      voicePrompt.textContent = "Ahora dime tu número de contacto.";
+      speak("Ahora dime tu número de contacto.");
+    } else if(step === "direccion"){
+      voiceStepLabel.textContent = "Paso 3 de 4 · Dirección";
+      voicePrompt.textContent = "Dime la dirección donde quieres recibir tu pedido.";
+      speak("Dime la dirección donde quieres recibir tu pedido.");
+    } else if(step === "platos"){
+      voiceStepLabel.textContent = "Paso 4 de 4 · Platos";
+      voicePrompt.textContent = "Dime el plato del menú del día o de la carta que quieres pedir.";
+      speak("Dime el plato del menú del día o de la carta que quieres pedir.");
+      voiceManualPicker.style.display = "block";
+      renderVoiceOrderList();
+      voiceStepActions.innerHTML = `<button type="button" class="primary" id="voiceFinishBtn">Ya terminé, ver resumen</button>`;
+      document.getElementById("voiceFinishBtn").addEventListener("click", () => setVoiceStep("resumen"));
+    } else if(step === "resumen"){
+      voiceStepLabel.textContent = "Resumen del pedido";
+      voiceMicBtn.style.display = "none";
+      const nombreVal = document.getElementById("nombre").value || "(sin nombre)";
+      const telVal = document.getElementById("telefono").value || "(sin teléfono)";
+      const dirVal = document.getElementById("direccion").value || "(sin dirección)";
+      voicePrompt.innerHTML = `<strong>${nombreVal}</strong><br>${telVal}<br>${dirVal}`;
+      speak("Este es el resumen de tu pedido. Revísalo y continúa para elegir el medio de pago y enviarlo por WhatsApp.");
+      renderVoiceOrderList();
+      voiceStepActions.innerHTML = `
+        <button type="button" id="voiceBackBtn">Agregar otro plato</button>
+        <button type="button" class="primary" id="voiceContinueBtn">Continuar y enviar</button>`;
+      document.getElementById("voiceBackBtn").addEventListener("click", () => setVoiceStep("platos"));
+      document.getElementById("voiceContinueBtn").addEventListener("click", closeVoiceModalAndScroll);
+    }
+  }
+
+  function handleVoiceResult(transcript){
+    voiceTranscript.style.display = "block";
+    voiceTranscript.textContent = `Escuché: "${transcript}"`;
+
+    if(voiceStep === "nombre"){
+      document.getElementById("nombre").value = transcript.trim();
+      render();
+      setTimeout(() => setVoiceStep("telefono"), 900);
+    } else if(voiceStep === "telefono"){
+      document.getElementById("telefono").value = transcript.trim();
+      render();
+      setTimeout(() => setVoiceStep("direccion"), 900);
+    } else if(voiceStep === "direccion"){
+      document.getElementById("direccion").value = transcript.trim();
+      render();
+      setTimeout(() => setVoiceStep("platos"), 900);
+    } else if(voiceStep === "platos"){
+      const match = encontrarPlato(transcript);
+      if(match){
+        adjustQty(match.item.key, match.qty);
+        voiceTranscript.textContent = `Agregado: ${match.qty} × ${match.item.name}`;
+        speak(`Agregué ${match.qty} ${match.item.name}. ¿Algo más?`);
+        renderVoiceOrderList();
+      } else {
+        voiceTranscript.textContent = `No identifiqué ese plato en "${transcript}". Intenta de nuevo o elige de la lista de abajo.`;
+        speak("No identifiqué ese plato. Puedes intentar de nuevo o elegirlo de la lista.");
+      }
+    }
+  }
+
+  voiceMicBtn.addEventListener("click", async () => {
+    if(!speechSupported){
+      voiceTranscript.style.display = "block";
+      voiceTranscript.textContent = "Tu navegador no soporta reconocimiento de voz. Usa los campos de texto o la lista manual.";
+      return;
+    }
+    voiceMicBtn.classList.add("listening");
+    voiceStatus.textContent = "Escuchando...";
+    try{
+      const transcript = await listenOnce();
+      handleVoiceResult(transcript);
+    }catch(err){
+      voiceTranscript.style.display = "block";
+      voiceTranscript.textContent = "No te escuché bien. Toca el micrófono para intentar de nuevo.";
+    }finally{
+      voiceMicBtn.classList.remove("listening");
+      voiceStatus.textContent = "Toca para hablar";
+    }
+  });
+
+  document.getElementById("voiceManualAddBtn").addEventListener("click", () => {
+    const key = voiceManualSelect.value;
+    const qty = parseInt(document.querySelector("#voiceManualStepper .qty").textContent, 10);
+    adjustQty(key, qty);
+    renderVoiceOrderList();
+    document.querySelector("#voiceManualStepper .qty").textContent = "1";
+  });
+
+  document.getElementById("voiceManualStepper").addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if(!btn) return;
+    const qtyEl = document.querySelector("#voiceManualStepper .qty");
+    let qty = parseInt(qtyEl.textContent, 10);
+    qty = btn.dataset.action === "plus" ? qty + 1 : Math.max(1, qty - 1);
+    qtyEl.textContent = qty;
+  });
+
+  function openVoiceModal(){
+    voiceOverlay.classList.add("open");
+    setVoiceStep("nombre");
+  }
+  function closeVoiceModal(){
+    voiceOverlay.classList.remove("open");
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+  function closeVoiceModalAndScroll(){
+    closeVoiceModal();
+    document.getElementById("summaryLines")?.closest(".block")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  document.getElementById("voiceStartBtn").addEventListener("click", openVoiceModal);
+  document.getElementById("voiceCloseBtn").addEventListener("click", closeVoiceModal);
 
   render();
 </script>

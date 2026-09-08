@@ -1004,22 +1004,60 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
     return new Promise((resolve, reject) => {
       if(!speechSupported){ reject("unsupported"); return; }
       let settled = false;
+      let finalTranscript = "";
       const rec = new SpeechRecognitionCtor();
       rec.lang = "es-CO";
-      rec.interimResults = false;
+      rec.interimResults = true;
+      rec.continuous = true;
       rec.maxAlternatives = 1;
+
+      // le damos hasta 7 segundos de margen antes de cerrar la escucha
+      const stopTimer = setTimeout(() => {
+        try{ rec.stop(); }catch(e){}
+      }, 7000);
+
       rec.onresult = (e) => {
-        settled = true;
-        resolve(e.results[0][0].transcript);
+        for(let i = e.resultIndex; i < e.results.length; i++){
+          if(e.results[i].isFinal){
+            finalTranscript += e.results[i][0].transcript + " ";
+          }
+        }
       };
       rec.onerror = (e) => {
-        if(!settled){ settled = true; reject(e.error); }
+        if(!settled){
+          settled = true;
+          clearTimeout(stopTimer);
+          reject(e.error || "unknown");
+        }
       };
       rec.onend = () => {
-        if(!settled){ settled = true; reject("no-speech"); }
+        clearTimeout(stopTimer);
+        if(!settled){
+          settled = true;
+          if(finalTranscript.trim()) resolve(finalTranscript.trim());
+          else reject("no-speech");
+        }
       };
       rec.start();
     });
+  }
+
+  function mensajeErrorVoz(err){
+    switch(err){
+      case "not-allowed":
+      case "service-not-allowed":
+        return "Debes permitir el uso del micrófono para este sitio en la configuración del navegador.";
+      case "audio-capture":
+        return "No se encontró un micrófono disponible en este dispositivo.";
+      case "network":
+        return "Se necesita conexión a internet para reconocer la voz. Verifica tu conexión y vuelve a intentar.";
+      case "no-speech":
+        return "No detecté ninguna voz. Acerca el celular y habla un poco más fuerte, luego toca el micrófono de nuevo.";
+      case "unsupported":
+        return "Este navegador no soporta reconocimiento de voz. Usa los campos de texto o la lista manual.";
+      default:
+        return "No te escuché bien. Toca el micrófono para intentar de nuevo.";
+    }
   }
 
   function renderVoiceOrderList(){
@@ -1126,7 +1164,7 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
       handleVoiceResult(transcript);
     }catch(err){
       voiceTranscript.style.display = "block";
-      voiceTranscript.textContent = "No te escuché bien. Toca el micrófono para intentar de nuevo.";
+      voiceTranscript.textContent = mensajeErrorVoz(err);
     }finally{
       voiceMicBtn.classList.remove("listening");
       voiceStatus.textContent = "Toca para hablar";
@@ -1150,9 +1188,20 @@ Hola, quiero pedir del menú. Este es mi pedido:`;
     qtyEl.textContent = qty;
   });
 
-  function openVoiceModal(){
+  async function openVoiceModal(){
     voiceOverlay.classList.add("open");
     setVoiceStep("nombre");
+
+    // Pedimos el permiso de micrófono de una vez, para detectar temprano si fue negado
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(t => t.stop());
+      }catch(err){
+        voiceTranscript.style.display = "block";
+        voiceTranscript.textContent = "Debes permitir el uso del micrófono para poder hacer el pedido por voz. Revisa los permisos del sitio en tu navegador y vuelve a intentar.";
+      }
+    }
   }
   function closeVoiceModal(){
     voiceOverlay.classList.remove("open");

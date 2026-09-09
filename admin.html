@@ -1,41 +1,100 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Don Platico</title>
-<style>body{font-family:sans-serif;padding:18px;max-width:700px;margin:auto}textarea{width:100%;height:120px;margin-bottom:12px}button{background:#1F4B3F;color:#fff;padding:12px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}pre{background:#f4f4f4;padding:12px;overflow:auto;border-radius:8px}</style></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin TXT Don Platico</title>
+<style>
+body{font-family:Work Sans,sans-serif;padding:18px;max-width:720px;margin:auto;background:#FBEBCB}
+h2{font-family:Baloo 2,sans-serif;margin-bottom:4px}
+textarea{width:100%;height:340px;padding:12px;border-radius:10px;border:1.5px solid #ccc;font-size:13px;background:#fff}
+button{background:#1F4B3F;color:#fff;padding:14px;border:none;border-radius:10px;font-weight:800;width:100%;margin-top:12px;cursor:pointer;font-size:15px}
+#file{width:100%;margin:12px 0}
+pre{background:#fff;padding:12px;border-radius:10px;border:1px solid #ddd;white-space:pre-wrap;font-size:12px;overflow:auto}
+.box{background:#FFFDF6;border-radius:12px;padding:16px;margin-top:16px;border:1px solid #ddd}
+</style>
+</head>
 <body>
-<h2>Editor rápido Don Platico</h2>
-<p>Escribe cada plato así: Nombre | precio (ej: Pollo frito | 19000)</p>
-<label>Platos Principales</label><textarea id="p1">Higado al gusto (bistec o encebollado) | 19000
-Pollo frito | 19000
-Pechuga asada | 19000
-Carne asada | 19000
-Alitas BBQ | 19000
-Lomo de cerdo asado | 19000
-Chuleta asada | 19000
-Sancocho de hueso con Arroz | 9000
-Sancocho de pollo con Arroz | 9000
-Carne desmechada | 19000
-Carne en bistec | 19000</textarea>
-<label>Platos a la carta</label><textarea id="p2">Pechuga en salsa de queso acompañado de arroz de coco | 30000
-Bistec a caballo | 26000
-Coctel de camarón | 35000
-Arroz Camarones | 40000
-Arroz de mariscos | 50000
-Mojarra marinera | 55000
-Mojarra en zumo coco | 45000
-Mojarra frita | 40000</textarea>
-<label>Adicionales</label><textarea id="p3">Porción de Papas o Yuca frita | 7000
-Porción Patacones/ Tajadas/Granos/Ensalada | 5000
-Porción de Arroz de coco | 4000
-Porción de Arroz blanco | 3000
-Cambio de Arroz blanco a Arroz de coco | 2000</textarea>
-<label>Bebidas</label><textarea id="p4">Jugo en leche | 8000
-Jugo natural en agua | 7000
-Jugo Pet | 4000
-Gaseosa | 3500
-Bebida adicional (acompañamiento) | 1000</textarea>
-<button onclick="generar()">Generar menu.json</button>
-<pre id="out"></pre>
+<h2>Admin - Convierte tu TXT de WhatsApp a menu.json</h2>
+<p>Sube tu archivo.txt o pega el texto. Detecta fecha y precios automático.</p>
+
+<input type="file" id="file" accept=".txt">
+<textarea id="txt" placeholder="Pega aquí tu menú completo de hoy..."></textarea>
+<button onclick="procesar()">Convertir a menu.json</button>
+
+<div class="box">
+<strong id="status">Esperando menú...</strong>
+<pre id="out">Aquí aparecerá el JSON listo para tu menu.json</pre>
+<button id="copyBtn" style="display:none;background:#25D366" onclick="copiar()">📋 Copiar JSON</button>
+</div>
+
 <script>
-function parse(t){return t.split('\n').filter(l=>l.trim()).map(l=>{const [n,p]=l.split('|'); return {nombre:n.trim(), precio:parseInt(p.trim().replace(/\D/g,''),10)}});}
-function generar(){const data={fecha:new Date().toISOString().slice(0,10), platosPrincipales:parse(document.getElementById('p1').value), platosCarta:parse(document.getElementById('p2').value), adicionales:parse(document.getElementById('p3').value), bebidas:parse(document.getElementById('p4').value)}; document.getElementById('out').textContent=JSON.stringify(data,null,2);}
+function limpiarPrecio(s){
+  let d = s.replace(/\./g,'').replace(/[^0-9]/g,'');
+  return parseInt(d||'0',10);
+}
+function limpiarNombre(s){
+  return s.replace(/^\*+\s*/,'').split('$')[0].split(':')[0].replace(/\s+/g,' ').trim();
+}
+function detectarFecha(t){
+  let meses={enero:'01',febrero:'02',marzo:'03',abril:'04',mayo:'05',junio:'06',julio:'07',agosto:'08',septiembre:'09',setiembre:'09',octubre:'10',noviembre:'11',diciembre:'12'};
+  let m=t.toLowerCase().match(/(\w+)\s+(\d{1,2})\s+(\d{4})/);
+  if(m && meses[m[1]]) return `${m[3]}-${meses[m[1]]}-${String(m[2]).padStart(2,'0')}`;
+  let m2=t.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(m2) return m2[0];
+  return new Date().toISOString().slice(0,10);
+}
+function extraerSeccion(texto,inicio,fines){
+  let idx=texto.toLowerCase().indexOf(inicio.toLowerCase());
+  if(idx==-1) return '';
+  let resto=texto.slice(idx+inicio.length);
+  let fin=resto.length;
+  fines.forEach(f=>{
+    let j=resto.toLowerCase().indexOf(f.toLowerCase());
+    if(j!=-1 && j<fin) fin=j;
+  });
+  return resto.slice(0,fin);
+}
+function parseItems(sec){
+  let items=[];
+  sec.split('\n').forEach(l=>{
+    l=l.trim(); if(!l) return;
+    let low=l.toLowerCase();
+    if(low.includes('buen día')||low.includes('danos tu nombre')||low.includes('dirección')||low.includes('domicilio')||low.includes('nequi')||low.startsWith('1.')||low.startsWith('2.')||low.startsWith('3.')) return;
+    if(!l.includes('$')) return;
+    let nombre=limpiarNombre(l);
+    let precio=limpiarPrecio(l.split('$').pop());
+    if(nombre.length<3 || precio<1000) return;
+    items.push({nombre, precio});
+  });
+  return items;
+}
+function procesar(){
+  let txt=document.getElementById('txt').value;
+  if(!txt.trim()){alert('Pega tu menú primero');return;}
+  let fecha=detectarFecha(txt);
+  let s1=extraerSeccion(txt,'Platos Principales',['Platos a la carta','Adicionales','Bebidas']);
+  let s2=extraerSeccion(txt,'Platos a la carta',['Adicionales','Bebidas']);
+  let s3=extraerSeccion(txt,'Adicionales',['Bebidas']);
+  let s4=extraerSeccion(txt,'Bebidas',['']);
+  let data={
+    fecha: fecha,
+    platosPrincipales: parseItems(s1),
+    platosCarta: parseItems(s2),
+    adicionales: parseItems(s3),
+    bebidas: parseItems(s4)
+  };
+  document.getElementById('status').textContent=`✅ Fecha: ${fecha} | Principales:${data.platosPrincipales.length} Carta:${data.platosCarta.length} Adicionales:${data.adicionales.length} Bebidas:${data.bebidas.length}`;
+  document.getElementById('out').textContent=JSON.stringify(data,null,2);
+  document.getElementById('copyBtn').style.display='block';
+}
+document.getElementById('file').addEventListener('change',e=>{
+  let f=e.target.files[0]; if(!f) return;
+  let r=new FileReader();
+  r.onload=ev=>{document.getElementById('txt').value=ev.target.result; procesar();};
+  r.readAsText(f);
+});
+function copiar(){navigator.clipboard.writeText(document.getElementById('out').textContent); alert('¡Copiado! Ahora pégalo en menu.json');}
 </script>
-</body></html>
+</body>
+</html>

@@ -1,37 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Don Platico — Pedidos</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--sand:#FBEBCB;--paper:#FFFDF6;--ink:#2B2018;--tomato:#B4332A;--palm:#1F4B3F;--navy:#181A2E;--mango:#E19A2C;--line:rgba(43,32,24,.14)}
-*{box-sizing:border-box}body{margin:0;background:var(--sand);font-family:'Work Sans',sans-serif;padding-bottom:110px;color:var(--ink)}
-.wrap{max-width:640px;margin:0 auto;padding:0 18px}.hero{background:var(--navy);padding:28px 18px;border-bottom:6px solid var(--mango)}.hero h1{font-family:'Baloo 2';font-size:44px;color:#FFA23A;margin:0}.hero p{color:#D8D2C4}
-section.block{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 20px 8px;margin-top:20px}
-.item-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px dashed var(--line)}.item-row:first-of-type{border-top:none}.item-price{font-size:13px;color:#8F2620;font-weight:600}
-.stepper{display:flex;border:1.5px solid var(--line);border-radius:9px;overflow:hidden}.stepper button{width:32px;height:32px;border:none;background:#F3D9A4;font-size:17px;cursor:pointer}.stepper.qty{width:30px;text-align:center;font-weight:600}
-.pay-options{display:flex;gap:10px;margin-bottom:14px}.pay-btn{flex:1;border:2px solid #25D366;background:#fff;padding:12px 10px;border-radius:10px;text-align:center;cursor:pointer;display:flex;flex-direction:column;gap:3px}.pay-btn.active{background:rgba(37,211,102,.12)}.pay-line1{font-weight:700;font-size:15px}.pay-line2{font-weight:500;font-size:13px}#billeteWrap{display:none}
-.summary-line{display:flex;justify-content:space-between;padding:6px 0;color:#6B5D4F}.summary-line.total{font-weight:700;font-size:18px;color:var(--ink);border-top:1.5px solid var(--line);margin-top:6px;padding-top:12px}
-.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--navy);border-top:4px solid var(--mango);padding:10px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:20}.sticky-cta.hint{width:100%;max-width:640px;background:#FFA23A;color:#3A2308;font-weight:700;padding:14px 18px;border-radius:11px;text-align:center}.sticky-cta button{width:100%;max-width:640px;background:#25D366;border:none;font-weight:700;padding:14px 18px;border-radius:11px;cursor:pointer}.nequi-banner{background:#FFF9DB;border:3px solid #25D366;border-radius:12px;padding:14px;text-align:center;font-weight:800;margin-top:18px}.ghost-btn{border:1.5px solid var(--line);background:#fff;padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:600}#exitBtn{background:var(--tomato);color:#fff;border-color:var(--tomato)}.ghost-btn-accent{background:#25D366;flex:1}.exit-bottom{width:100%;margin-top:22px;background:var(--tomato);color:#000;border:2px solid var(--tomato);font-weight:800;padding:13px;border-radius:11px;cursor:pointer}
-.voice-cta{width:100%;background:var(--palm);color:#fff;border:none;border-radius:11px;padding:14px;font-weight:700;cursor:pointer;margin-bottom:18px}.voice-overlay{display:none;position:fixed;inset:0;background:rgba(24,26,46,.72);z-index:50;align-items:flex-end;justify-content:center}.voice-overlay.open{display:flex}.voice-modal{background:var(--paper);width:100%;max-width:640px;max-height:88vh;overflow-y:auto;border-radius:18px 18px 0 0}.voice-modal-head{position:sticky;top:0;background:var(--navy);color:#fff;padding:16px 18px;display:flex;justify-content:space-between}.voice-close{background:none;border:none;color:#fff;font-size:18px;cursor:pointer}.voice-body{padding:18px}.voice-prompt{text-align:center;font-weight:600;margin:4px 0 18px}.voice-mic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:16px}.voice-mic{width:76px;height:76px;border-radius:50%;border:none;background:var(--tomato);color:#fff;font-size:30px;cursor:pointer}.voice-mic.listening{background:#25D366}.voice-transcript{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:10px;margin-bottom:14px}.voice-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}.voice-actions button{border:1.5px solid var(--line);background:#fff;padding:9px 14px;border-radius:9px;font-weight:600;cursor:pointer}.voice-actions button.primary{background:var(--palm);color:#fff}.voice-manual{background:rgba(31,75,63,.06);border:1px dashed rgba(31,75,63,.3);border-radius:10px;padding:12px;margin-bottom:16px}#voiceManualSelect{width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--line);margin-bottom:10px}.voice-manual-row{display:flex;gap:10px}.voice-manual-add{flex:1;background:var(--tomato);color:#fff;border:none;border-radius:9px;padding:9px;font-weight:700;cursor:pointer}.voice-order-list{font-size:13.5px}.voice-order-item{display:flex;justify-content:space-between;padding:6px 0;border-top:1px dashed var(--line)}.voice-total{display:flex;justify-content:space-between;font-weight:800;font-size:16px;border-top:2px solid var(--ink);margin-top:8px;padding-top:10px}.included-note{background:rgba(31,75,63,.08);border:1px dashed rgba(31,75,63,.35);padding:8px 12px;border-radius:9px;margin-bottom:14px;font-size:13px}
+:root{--sand:#FBEBCB;--paper:#FFFDF6;--ink:#2B2018;--soft:#6B5D4F;--tomato:#B4332A;--palm:#1F4B3F;--navy:#181A2E;--mango:#E19A2C;--line:rgba(43,32,24,.14)}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--sand);color:var(--ink);font-family:'Work Sans',sans-serif;padding-bottom:120px}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px}
+.hero{background:var(--navy);padding:30px 18px 34px;border-bottom:6px solid var(--mango)}
+.hero h1{font-family:'Baloo 2',sans-serif;font-size:44px;font-weight:800;color:#FFA23A;margin:0;line-height:1}
+.hero p{color:#D8D2C4;margin:10px 0 0;font-size:14px}
+.block{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:20px}
+.block h2{font-size:19px;font-weight:700;margin:0 0 14px}
+.field-group{margin-bottom:16px}
+.field-group label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.field-group input,.field-group textarea{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-size:15px;background:#fff;font-family:inherit}
+.field-group textarea{resize:vertical;min-height:70px}
+.top-actions{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.ghost-btn{border:1.5px solid var(--line);background:#fff;padding:10px 14px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer}
+#exitBtn{background:var(--tomato);color:#fff;border-color:var(--tomato)}
+.ghost-btn-accent{background:#25D366;border-color:#25D366;flex:1}
+.voice-cta{width:100%;background:var(--palm);color:#fff;border:none;border-radius:11px;padding:14px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:6px}
+.item-row{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px dashed var(--line);align-items:center}
+.item-row:first-of-type{border-top:none}
+.item-name{font-weight:600;font-size:14.5px;line-height:1.3}
+.item-price{font-size:13px;color:#8F2620;font-weight:600;margin-top:2px}
+.stepper{display:flex;border:1.5px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+.stepper button{width:36px;height:36px;border:none;background:#F3D9A4;font-size:18px;cursor:pointer;font-weight:700}
+.stepper.qty{width:36px;display:flex;align-items:center;justify-content:center;font-weight:700;background:#fff}
+.included-note{display:flex;gap:8px;background:rgba(31,75,63,.08);border:1px dashed rgba(31,75,63,.35);font-size:12.5px;padding:9px 12px;border-radius:9px;margin-bottom:12px}
+.pay-options{display:flex;gap:10px;margin-bottom:14px}
+.pay-btn{flex:1;border:2px solid #25D366;background:#fff;padding:12px 10px;border-radius:10px;text-align:center;cursor:pointer;display:flex;flex-direction:column}
+.pay-btn.active{background:rgba(37,211,102,.15)}
+.pay-line1{font-weight:700;font-size:14px}.pay-line2{font-weight:500;font-size:12px;margin-top:2px}
+#billeteWrap{display:none;margin-top:12px}
+.summary-line{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--soft)}
+.summary-line.total{color:var(--ink);font-weight:800;font-size:18px;border-top:2px solid var(--ink);margin-top:8px;padding-top:12px}
+.empty-note{color:var(--soft);font-size:13.5px;padding:10px 0}
+.nequi-banner{background:#FFF9DB;border:3px solid #25D366;border-radius:12px;padding:14px;text-align:center;font-weight:800;font-size:14px;margin-top:20px}
+.exit-bottom{width:100%;margin-top:20px;background:var(--tomato);color:#fff;border:2px solid var(--tomato);font-weight:800;padding:13px;border-radius:11px;cursor:pointer}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--navy);border-top:4px solid var(--mango);padding:10px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:20}
+.sticky-cta.hint{width:100%;max-width:640px;background:#FFA23A;color:#3A2308;font-weight:700;font-size:14px;padding:12px 16px;border-radius:10px;text-align:center}
+.sticky-cta button{width:100%;max-width:640px;background:#25D366;color:#0b2b16;border:none;font-weight:800;font-size:16px;padding:14px 18px;border-radius:11px;cursor:pointer}
+.voice-overlay{display:none;position:fixed;inset:0;background:rgba(24,26,46,.72);z-index:50;align-items:flex-end;justify-content:center}.voice-overlay.open{display:flex}.voice-modal{background:var(--paper);width:100%;max-width:640px;max-height:88vh;overflow-y:auto;border-radius:18px 18px 0 0}.voice-modal-head{position:sticky;top:0;background:var(--navy);color:#fff;padding:16px 18px;display:flex;justify-content:space-between}.voice-close{background:none;border:none;color:#fff;font-size:18px;cursor:pointer}.voice-body{padding:18px}.voice-prompt{text-align:center;font-weight:600;margin:4px 0 18px}.voice-mic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:16px}.voice-mic{width:76px;height:76px;border-radius:50%;border:none;background:var(--tomato);color:#fff;font-size:30px;cursor:pointer}.voice-mic.listening{background:#25D366}.voice-transcript{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:10px;margin-bottom:14px;display:none}.voice-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}.voice-actions button{border:1.5px solid var(--line);background:#fff;padding:9px 14px;border-radius:9px;font-weight:600;cursor:pointer}.voice-actions button.primary{background:var(--palm);color:#fff}.voice-manual{background:rgba(31,75,63,.06);border:1px dashed rgba(31,75,63,.3);border-radius:10px;padding:12px;margin-bottom:16px;display:none}#voiceManualSelect{width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--line);margin-bottom:10px}.voice-manual-row{display:flex;gap:10px}.voice-manual-add{flex:1;background:var(--tomato);color:#fff;border:none;border-radius:9px;padding:9px;font-weight:700;cursor:pointer}.voice-order-list{font-size:13.5px}.voice-order-item{display:flex;justify-content:space-between;padding:6px 0;border-top:1px dashed var(--line)}.voice-total{display:flex;justify-content:space-between;font-weight:800;font-size:16px;border-top:2px solid var(--ink);margin-top:8px;padding-top:10px}
 </style>
 </head>
 <body>
 <div class="hero"><div class="wrap"><h1>Don Platico</h1><p id="fechaMenu">Cargando menú de hoy...</p></div></div>
 <div class="wrap">
-<section class="block"><div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap"><button class="ghost-btn" id="exitBtn">Salir</button><button class="ghost-btn ghost-btn-accent" id="quickMenuBtn">Sólo pedir el menú del día</button></div><button class="voice-cta" id="voiceStartBtn">🎤 Hacer mi pedido por voz</button><h2>Tus datos</h2><label>Nombre</label><input type="text" id="nombre"><label>Teléfono</label><input type="text" id="telefono"><label>Dirección</label><input type="text" id="direccion"><label>Observaciones</label><textarea id="observaciones" rows="2"></textarea></section>
+
+<section class="block">
+<div class="top-actions"><button class="ghost-btn" id="exitBtn">Salir</button><button class="ghost-btn ghost-btn-accent" id="quickMenuBtn">Sólo pedir el menú del día</button></div>
+<button class="voice-cta" id="voiceStartBtn">🎤 Hacer mi pedido por voz</button>
+
+<h2>Tus datos</h2>
+<div class="field-group"><label>Nombre de contacto</label><input type="text" id="nombre" placeholder="Ej. Juan Pablo Durán"></div>
+<div class="field-group"><label>Número de contacto</label><input type="text" id="telefono" placeholder="Ej. 300 123 4567" inputmode="tel"></div>
+<div class="field-group"><label>Dirección de entrega</label><input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20, Cartagena"></div>
+<div class="field-group"><label>Observaciones (opcional)</label><textarea id="observaciones" rows="3" placeholder="Ej. Sin picante, timbre 2..."></textarea></div>
+</section>
+
 <section class="block"><h2>🍲 Platos Principales</h2><div class="included-note">🥤 La aguapanela va incluida con el menú del día.</div><div id="menuDishes"></div></section>
 <section class="block"><h2>🍲 Platos a la carta</h2><div id="especialidades"></div></section>
 <section class="block"><h2>🍟 Adicionales</h2><div id="adicionales"></div></section>
 <section class="block"><h2>🥤 Bebidas</h2><div id="bebidas"></div></section>
-<section class="block"><h2>Seleccionar medio de pago</h2><div class="pay-options"><div class="pay-btn active" data-pay="Efectivo"><span class="pay-line1">Pago en Efectivo</span><span class="pay-line2">Tengo la suma cerrada de $...</span></div><div class="pay-btn" data-pay="Transferencia NEQUI"><span class="pay-line1">Pago por transferencia</span><span class="pay-line2">LLAVE o NEQUI: 3014885090</span></div></div><div id="billeteWrap"><label>¿Con qué billete pagas?</label><input type="text" id="billete" placeholder="Ej. $50.000"></div></section>
-<section class="block"><h2>Resumen del pedido</h2><div id="summaryLines"></div><div id="emptyNote">Aún no has agregado platos.</div></section>
+
+<section class="block"><h2>Seleccionar medio de pago</h2>
+<div class="pay-options"><div class="pay-btn active" data-pay="Efectivo"><span class="pay-line1">Pago en Efectivo</span><span class="pay-line2">Tengo la suma cerrada de $...</span></div><div class="pay-btn" data-pay="Transferencia NEQUI"><span class="pay-line1">Pago por transferencia</span><span class="pay-line2">NEQUI: 3014885090</span></div></div>
+<div id="billeteWrap" class="field-group"><label>¿Con qué billete pagas?</label><input type="text" id="billete" placeholder="Ej. $50.000"></div>
+</section>
+
+<section class="block"><h2>Resumen del pedido</h2><div id="summaryLines"></div><div id="emptyNote" class="empty-note">Aún no has agregado platos ni bebidas.</div></section>
 <div class="nequi-banner">Nequi Don Platico · 301 488 5090 · Pedidos con anticipación</div>
 <button class="exit-bottom" id="exitBottomBtn">Salir sin hacer pedido</button>
 </div>
-<div class="voice-overlay" id="voiceOverlay"><div class="voice-modal"><div class="voice-modal-head"><span id="voiceStepLabel">Pedido por voz</span><button class="voice-close" id="voiceCloseBtn">✕</button></div><div class="voice-body"><p class="voice-prompt" id="voicePrompt"></p><div class="voice-mic-wrap"><button class="voice-mic" id="voiceMicBtn">🎤</button><div id="voiceStatus">Toca para hablar</div></div><div class="voice-transcript" id="voiceTranscript" style="display:none"></div><div class="voice-actions" id="voiceStepActions"></div><div class="voice-manual" id="voiceManualPicker" style="display:none"><select id="voiceManualSelect"></select><div class="voice-manual-row"><div class="stepper" id="voiceManualStepper"><button data-action="minus">−</button><span class="qty">1</span><button data-action="plus">+</button></div><button class="voice-manual-add" id="voiceManualAddBtn">Agregar</button></div></div><div class="voice-order-list" id="voiceOrderList"></div></div></div></div>
-<div class="sticky-cta"><div class="hint" id="disabledHint">Debes llenar tus datos completos...</div><button id="sendBtn" disabled>Enviar por WhatsApp — <span id="ctaTotal">$0</span></button></div>
+
+<div class="voice-overlay" id="voiceOverlay"><div class="voice-modal"><div class="voice-modal-head"><span id="voiceStepLabel">Pedido por voz</span><button class="voice-close" id="voiceCloseBtn">✕</button></div><div class="voice-body"><p class="voice-prompt" id="voicePrompt"></p><div class="voice-mic-wrap"><button class="voice-mic" id="voiceMicBtn">🎤</button><div id="voiceStatus">Toca para hablar</div></div><div class="voice-transcript" id="voiceTranscript"></div><div class="voice-actions" id="voiceStepActions"></div><div class="voice-manual" id="voiceManualPicker"><select id="voiceManualSelect"></select><div class="voice-manual-row"><div class="stepper" id="voiceManualStepper"><button data-action="minus">−</button><span class="qty">1</span><button data-action="plus">+</button></div><button class="voice-manual-add" id="voiceManualAddBtn">Agregar</button></div></div><div class="voice-order-list" id="voiceOrderList"></div></div></div></div>
+
+<div class="sticky-cta"><div class="hint" id="disabledHint">Debes llenar tus datos completos para enviar tu orden</div><button id="sendBtn" disabled>Enviar pedido por WhatsApp — <span id="ctaTotal">$0</span></button></div>
+
 <script>
 const WHATSAPP_NUMBER="573178451450";
 let menuDiaData=[], especialidadesData=[], adicionalesData=[], bebidasData=[];
@@ -46,13 +96,12 @@ async function loadMenu(){
   document.getElementById('fechaMenu').textContent='Menú del día: '+(data.fecha||'Hoy')+' - Pedidos con anticipación';
   buildAll();
  }catch(e){
-  document.getElementById('fechaMenu').textContent='Error cargando menu.json - usando menú de respaldo';
-  menuDiaData=[["Pollo frito",19000],["Carne asada",19000]]; especialidadesData=[["Mojarra frita",40000]]; adicionalesData=[["Papas",7000]]; bebidasData=[["Gaseosa",3500]];
+  document.getElementById('fechaMenu').textContent='Error cargando menú';
   buildAll();
  }
 }
 function money(n){return "$"+n.toLocaleString("es-CO");}
-function buildRows(container,data,prefix){container.innerHTML=''; data.forEach((item,idx)=>{const name=item[0],price=item[1];const row=document.createElement("div");row.className="item-row";row.innerHTML=`<div><div style="font-weight:600">${name}</div><div class="item-price">${money(price)} c/u</div></div><div class="stepper" data-item="${prefix}${idx}" data-price="${price}" data-name="${name}"><button data-action="minus">−</button><span class="qty">0</span><button data-action="plus">+</button></div>`;container.appendChild(row);});}
+function buildRows(container,data,prefix){container.innerHTML=''; data.forEach((item,idx)=>{const row=document.createElement("div");row.className="item-row";row.innerHTML=`<div><div class="item-name">${item[0]}</div><div class="item-price">${money(item[1])} c/u</div></div><div class="stepper" data-item="${prefix}${idx}" data-price="${item[1]}" data-name="${item[0]}"><button data-action="minus">−</button><span class="qty">0</span><button data-action="plus">+</button></div>`;container.appendChild(row);});}
 function buildAll(){
  buildRows(document.getElementById("menuDishes"),menuDiaData,"dish");
  buildRows(document.getElementById("especialidades"),especialidadesData,"esp");
@@ -60,18 +109,18 @@ function buildAll(){
  buildRows(document.getElementById("bebidas"),bebidasData,"beb");
  initVoiceItems(); render();
 }
-function doExit(){if(confirm("¿Salir sin hacer pedido?")){window.close(); setTimeout(()=>location.href="about:blank",300);}}
+function doExit(){if(confirm("¿Seguro que quieres salir sin hacer tu pedido?")){window.close(); setTimeout(()=>location.href="about:blank",300);}}
 document.getElementById("exitBtn").onclick=doExit; document.getElementById("exitBottomBtn").onclick=doExit;
 document.getElementById("quickMenuBtn").onclick=()=>{let txt=`*Menú Don Platico*%0A`+menuDiaData.map(i=>`- ${i[0]}: ${money(i[1])}`).join('%0A'); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${txt}`,"_blank");};
 function adjustQty(key,delta){const s=document.querySelector(`.stepper[data-item="${key}"]`); if(!s) return; const q=s.querySelector(".qty"); let v=parseInt(q.textContent,10)+delta; v=Math.max(0,v); q.textContent=v; render();}
 document.body.addEventListener("click",e=>{const b=e.target.closest(".stepper button"); if(!b) return; const st=b.closest(".stepper"); if(st.id==="voiceManualStepper") return; adjustQty(st.dataset.item, b.dataset.action==="plus"?1:-1);});
 let payMethod="Efectivo"; document.querySelectorAll(".pay-btn").forEach(b=>{b.onclick=()=>{document.querySelectorAll(".pay-btn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); payMethod=b.dataset.pay; document.getElementById("billeteWrap").style.display=payMethod==="Efectivo"?"block":"none"; render();};});
 function getCart(){const c=[]; document.querySelectorAll(".stepper").forEach(s=>{if(s.id==="voiceManualStepper") return; const q=parseInt(s.querySelector(".qty").textContent,10); if(q>0) c.push({key:s.dataset.item,name:s.dataset.name,price:parseInt(s.dataset.price,10),qty:q});}); return c;}
-function calcTotals(cart){let sub=0; cart.forEach(i=>sub+=i.price*i.qty); let rec=0; cart.forEach(it=>{const low=it.name.toLowerCase(); if(it.key.startsWith("adi")) return; if(it.key.startsWith("beb") && it.price>7000) return; if(low.includes("sancocho")) rec+=2000*it.qty; else if(it.key.startsWith("dish")||it.key.startsWith("esp")||it.key==="sopa") rec+=1000*it.qty;}); return {subtotal:sub,recipientes:rec,total:sub+rec};}
+function calcTotals(cart){let sub=0; cart.forEach(i=>sub+=i.price*i.qty); let rec=0; cart.forEach(it=>{const low=it.name.toLowerCase(); if(it.key.startsWith("adi")) return; if(it.key.startsWith("beb") && it.price>7000) return; if(low.includes("sancocho")) rec+=2000*it.qty; else if(it.key.startsWith("dish")||it.key.startsWith("esp")) rec+=1000*it.qty;}); return {subtotal:sub,recipientes:rec,total:sub+rec};}
 function render(){const cart=getCart(); const t=calcTotals(cart); const sum=document.getElementById("summaryLines"); sum.innerHTML=''; if(cart.length===0) document.getElementById("emptyNote").style.display="block"; else{document.getElementById("emptyNote").style.display="none"; cart.forEach(it=>{const l=document.createElement("div");l.className="summary-line";l.innerHTML=`<span>${it.name} × ${it.qty}</span><span>${money(it.price*it.qty)}</span>`; sum.appendChild(l);}); const r=document.createElement("div");r.className="summary-line";r.innerHTML=`<span>Recipientes</span><span>${money(t.recipientes)}</span>`;sum.appendChild(r); const tot=document.createElement("div");tot.className="summary-line total";tot.innerHTML=`<span>Total a pagar</span><span>${money(t.total)}</span>`;sum.appendChild(tot);}document.getElementById("ctaTotal").textContent=money(t.total); const nom=document.getElementById("nombre").value.trim(), tel=document.getElementById("telefono").value.trim(), dir=document.getElementById("direccion").value.trim(); const can=cart.length>0&&nom&&tel&&dir; document.getElementById("sendBtn").disabled=!can; document.getElementById("disabledHint").style.display=can?"none":"block"; document.getElementById("sendBtn").style.display=can?"flex":"none"; return {cart,subtotal:t.subtotal,recipientes:t.recipientes,total:t.total};}
-document.getElementById("nombre").addEventListener("input",render); document.getElementById("telefono").addEventListener("input",render); document.getElementById("direccion").addEventListener("input",render);
-document.getElementById("sendBtn").onclick=()=>{const d=render(); let msg=`*Pedido Don Platico*%0ANombre: ${document.getElementById("nombre").value}%0ATel: ${document.getElementById("telefono").value}%0ADir: ${document.getElementById("direccion").value}%0A%0A*Pedido:*%0A`; d.cart.forEach(i=>msg+=`- ${i.name} x${i.qty} — ${money(i.price*i.qty)}%0A`); msg+=`%0ASubtotal: ${money(d.subtotal)}%0ARecipientes: ${money(d.recipientes)}%0A*Total: ${money(d.total)}*%0A%0APago: ${payMethod}`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");};
-// VOZ 2 PASOS
+["nombre","telefono","direccion","billete","observaciones"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("sendBtn").onclick=()=>{const d=render(); let msg=`*Pedido Don Platico*%0ANombre: ${document.getElementById("nombre").value}%0ATel: ${document.getElementById("telefono").value}%0ADir: ${document.getElementById("direccion").value}%0A%0A*Pedido:*%0A`; d.cart.forEach(i=>msg+=`- ${i.name} x${i.qty} — ${money(i.price*i.qty)}%0A`); msg+=`%0ASubtotal: ${money(d.subtotal)}%0ARecipientes: ${money(d.recipientes)}%0A*Total: ${money(d.total)}*%0APago: ${payMethod}%0AObs: ${document.getElementById("observaciones").value}`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");};
+// VOZ
 let voiceItems=[]; function initVoiceItems(){voiceItems=[...menuDiaData.map((n,i)=>({key:`dish${i}`,name:n[0],price:n[1]})),...especialidadesData.map((n,i)=>({key:`esp${i}`,name:n[0],price:n[1]}))]; const sel=document.getElementById("voiceManualSelect"); sel.innerHTML=''; voiceItems.forEach(it=>{const o=document.createElement("option");o.value=it.key;o.textContent=`${it.name} — ${money(it.price)}`;sel.appendChild(o);});}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition, speechSupported=!!SR;
 const numPal={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10};

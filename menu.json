@@ -1,40 +1,102 @@
 {
-  "fecha": "2026-05-13",
+  "fecha": "2026-09-10",
   "platosPrincipales": [
-    {"nombre": "Higado al gusto (bistec o encebollado)", "precio": 19000},
-    {"nombre": "Pollo frito", "precio": 19000},
-    {"nombre": "Pechuga asada", "precio": 19000},
-    {"nombre": "Carne asada", "precio": 19000},
-    {"nombre": "Alitas BBQ", "precio": 19000},
-    {"nombre": "Lomo de cerdo asado", "precio": 19000},
-    {"nombre": "Chuleta asada", "precio": 19000},
-    {"nombre": "Sancocho de hueso con Arroz", "precio": 9000},
-    {"nombre": "Sancocho de pollo con Arroz", "precio": 9000},
-    {"nombre": "Carne desmechada", "precio": 19000},
-    {"nombre": "Carne en bistec", "precio": 19000}
+    {
+      "nombre": "Pollo frito",
+      "precio": 19000
+    },
+    {
+      "nombre": "Pechuga asada",
+      "precio": 19000
+    },
+    {
+      "nombre": "Carne asada",
+      "precio": 19000
+    },
+    {
+      "nombre": "Alitas BBQ",
+      "precio": 19000
+    },
+    {
+      "nombre": "Lomo de cerdo asado",
+      "precio": 19000
+    },
+    {
+      "nombre": "Chuleta asada",
+      "precio": 19000
+    },
+    {
+      "nombre": "​Sancocho de hueso con Arroz",
+      "precio": 9000
+    },
+    {
+      "nombre": "Sancocho de pollo con Arroz",
+      "precio": 9000
+    },
+    {
+      "nombre": "Carne desmechada",
+      "precio": 19000
+    },
+    {
+      "nombre": "Carne en bistec",
+      "precio": 19000
+    }
   ],
   "platosCarta": [
-    {"nombre": "Pechuga en salsa de queso acompañado de arroz de coco", "precio": 30000},
-    {"nombre": "Bistec a caballo", "precio": 26000},
-    {"nombre": "Coctel de camarón", "precio": 35000},
-    {"nombre": "Arroz Camarones", "precio": 40000},
-    {"nombre": "Arroz de mariscos", "precio": 50000},
-    {"nombre": "Mojarra marinera", "precio": 55000},
-    {"nombre": "Mojarra en zumo coco", "precio": 45000},
-    {"nombre": "Mojarra frita", "precio": 40000}
+    {
+      "nombre": "Pechuga en salsa de queso acompañado de arroz de coco",
+      "precio": 30000
+    },
+    {
+      "nombre": "Bistec a caballo",
+      "precio": 26000
+    },
+    {
+      "nombre": "Coctel de camarón",
+      "precio": 35000
+    },
+    {
+      "nombre": "Arroz Camarones",
+      "precio": 40000
+    },
+    {
+      "nombre": "Arroz de mariscos",
+      "precio": 50000
+    },
+    {
+      "nombre": "Mojarra marinera",
+      "precio": 55000
+    },
+    {
+      "nombre": "Mojarra en zumo coco",
+      "precio": 45000
+    },
+    {
+      "nombre": "​Mojarra frita",
+      "precio": 40000
+    }
   ],
   "adicionales": [
-    {"nombre": "Porción de Papas o Yuca frita", "precio": 7000},
-    {"nombre": "Porción Patacones/ Tajadas/Granos/Ensalada", "precio": 5000},
-    {"nombre": "Porción de Arroz de coco", "precio": 4000},
-    {"nombre": "Porción de Arroz blanco", "precio": 3000},
-    {"nombre": "Cambio de Arroz blanco a Arroz de coco", "precio": 2000}
+    {
+      "nombre": "​Porción de Papas o Yuca frita",
+      "precio": 7000
+    },
+    {
+      "nombre": "Porción Patacones/ Tajadas/Granos/Ensalada",
+      "precio": 5000
+    },
+    {
+      "nombre": "​Porción de Arroz de coco",
+      "precio": 4000
+    },
+    {
+      "nombre": "​Porción de Arroz blanco",
+      "precio": 3000
+    },
+    {
+      "nombre": "​Cambio de Arroz blanco a Arroz de coco",
+      "precio": 2000
+    }
   ],
-  "bebidas": [
-    {"nombre": "Jugo en leche", "precio": 8000},
-    {"nombre": "Jugo natural en agua", "precio": 7000},
-    {"nombre": "Jugo Pet", "precio": 4000},
-    {"nombre": "Gaseosa", "precio": 3500},
-    {"nombre": "Bebida adicional (acompañamiento)", "precio": 1000}
-  ]
+  "bebidas": []
 }

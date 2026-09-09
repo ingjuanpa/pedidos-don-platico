@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Don Platico</title>
+<style>body{font-family:sans-serif;padding:18px;max-width:700px;margin:auto}textarea{width:100%;height:120px;margin-bottom:12px}button{background:#1F4B3F;color:#fff;padding:12px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}pre{background:#f4f4f4;padding:12px;overflow:auto;border-radius:8px}</style></head>
+<body>
+<h2>Editor rápido Don Platico</h2>
+<p>Escribe cada plato así: Nombre | precio (ej: Pollo frito | 19000)</p>
+<label>Platos Principales</label><textarea id="p1">Higado al gusto (bistec o encebollado) | 19000
+Pollo frito | 19000
+Pechuga asada | 19000
+Carne asada | 19000
+Alitas BBQ | 19000
+Lomo de cerdo asado | 19000
+Chuleta asada | 19000
+Sancocho de hueso con Arroz | 9000
+Sancocho de pollo con Arroz | 9000
+Carne desmechada | 19000
+Carne en bistec | 19000</textarea>
+<label>Platos a la carta</label><textarea id="p2">Pechuga en salsa de queso acompañado de arroz de coco | 30000
+Bistec a caballo | 26000
+Coctel de camarón | 35000
+Arroz Camarones | 40000
+Arroz de mariscos | 50000
+Mojarra marinera | 55000
+Mojarra en zumo coco | 45000
+Mojarra frita | 40000</textarea>
+<label>Adicionales</label><textarea id="p3">Porción de Papas o Yuca frita | 7000
+Porción Patacones/ Tajadas/Granos/Ensalada | 5000
+Porción de Arroz de coco | 4000
+Porción de Arroz blanco | 3000
+Cambio de Arroz blanco a Arroz de coco | 2000</textarea>
+<label>Bebidas</label><textarea id="p4">Jugo en leche | 8000
+Jugo natural en agua | 7000
+Jugo Pet | 4000
+Gaseosa | 3500
+Bebida adicional (acompañamiento) | 1000</textarea>
+<button onclick="generar()">Generar menu.json</button>
+<pre id="out"></pre>
+<script>
+function parse(t){return t.split('\n').filter(l=>l.trim()).map(l=>{const [n,p]=l.split('|'); return {nombre:n.trim(), precio:parseInt(p.trim().replace(/\D/g,''),10)}});}
+function generar(){const data={fecha:new Date().toISOString().slice(0,10), platosPrincipales:parse(document.getElementById('p1').value), platosCarta:parse(document.getElementById('p2').value), adicionales:parse(document.getElementById('p3').value), bebidas:parse(document.getElementById('p4').value)}; document.getElementById('out').textContent=JSON.stringify(data,null,2);}
+</script>
+</body></html>

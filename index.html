@@ -8,7 +8,7 @@
 <style>
 :root{--sand:#FBEBCB;--paper:#FFFDF6;--ink:#2B2018;--soft:#6B5D4F;--tomato:#B4332A;--palm:#1F4B3F;--navy:#181A2E;--mango:#FFA23A;--line:rgba(43,32,24,.14)}
 *{box-sizing:border-box}html,body{margin:0;padding:0}
-body{background:var(--sand);color:var(--ink);font-family:'Work Sans',sans-serif;padding-bottom:160px}
+body{background:var(--sand);color:var(--ink);font-family:'Work Sans',sans-serif;padding-bottom:170px}
 .wrap{max-width:640px;margin:0 auto;padding:0 18px}
 .hero{background:var(--navy);padding:30px 18px 34px;border-bottom:6px solid var(--mango)}
 .hero h1{font-family:'Baloo 2',sans-serif;font-size:44px;font-weight:800;color:var(--mango);margin:0;line-height:1}
@@ -30,10 +30,16 @@ body{background:var(--sand);color:var(--ink);font-family:'Work Sans',sans-serif;
 .stepper{display:flex;border:1.5px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
 .stepper button{width:36px;height:36px;border:none;background:#F3D9A4;font-size:18px;cursor:pointer;font-weight:700}
 .stepper .qty{width:36px;display:flex;align-items:center;justify-content:center;font-weight:700;background:#fff}
-.pay-options{display:flex;gap:10px;margin-bottom:14px}
-.pay-btn{flex:1;border:2px solid #25D366;background:#fff;padding:12px 10px;border-radius:10px;text-align:center;cursor:pointer;display:flex;flex-direction:column}
-.pay-btn.active{background:rgba(37,211,102,.15)}
-.pay-line1{font-weight:700;font-size:14px}.pay-line2{font-size:12px;margin-top:2px}
+
+/* PAGOS - CORREGIDO VERDE / ROJO */
+.pay-options{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.pay-btn{flex:1;min-width:150px;border:2px solid #25D366;background:#fff;padding:12px 10px;border-radius:10px;text-align:center;cursor:pointer;display:flex;flex-direction:column;transition:.2s}
+.pay-btn .pay-line1{font-weight:700;font-size:13px}
+.pay-btn .pay-line2{font-size:11.5px;margin-top:3px;line-height:1.2}
+.pay-btn.active{background:rgba(37,211,102,.25) !important;border-color:#1F4B3F !important}
+.pay-btn.active .pay-line1,.pay-btn.active .pay-line2{color:#000 !important;font-weight:800}
+.pay-btn[data-pay*="NEQUI"].active{background:rgba(180,51,42,.22) !important;border-color:#B4332A !important}
+
 #billeteWrap{display:none;margin-top:12px}
 .summary-line{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--soft)}
 .summary-line.total{color:var(--ink);font-weight:800;font-size:18px;border-top:2px solid var(--ink);margin-top:8px;padding-top:12px}
@@ -41,34 +47,55 @@ body{background:var(--sand);color:var(--ink);font-family:'Work Sans',sans-serif;
 .nequi-banner{background:#FFF9DB;border:3px solid #25D366;border-radius:12px;padding:14px;text-align:center;font-weight:800;font-size:14px;margin-top:20px}
 .exit-bottom{width:100%;margin-top:20px;background:var(--tomato);color:#fff;border:2px solid var(--tomato);font-weight:800;padding:13px;border-radius:11px;cursor:pointer}
 
-/* BARRA INFERIOR CORREGIDA */
-.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--navy);border-top:4px solid var(--mango);padding:10px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:50;max-width:100%}
-.sticky-cta .hint{background:#FFA23A !important;color:#181A2E !important;font-weight:800;font-size:14px;padding:12px 16px;border-radius:10px;text-align:center;border:2px solid #181A2E;width:100%;max-width:640px}
+/* AVISO NARANJA RESTAURADO */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:var(--navy);border-top:4px solid var(--mango);padding:10px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:9999}
+.sticky-cta .hint{background:#FFA23A !important;color:#181A2E !important;font-weight:800;font-size:14px;padding:12px 16px;border-radius:10px;text-align:center;border:2px solid #181A2E;width:100%;max-width:640px;display:block}
 .sticky-cta button{width:100%;max-width:640px;background:#25D366;color:#0b2b16;border:none;font-weight:800;font-size:16px;padding:14px 18px;border-radius:11px;cursor:pointer}
 .sticky-cta button:disabled{display:none}
-
-.voice-overlay{display:none;position:fixed;inset:0;background:rgba(24,26,46,.72);z-index:60;align-items:flex-end;justify-content:center}.voice-overlay.open{display:flex}.voice-modal{background:var(--paper);border-radius:20px 20px 0 0;padding:20px;max-height:60vh;overflow-y:auto;width:100%;max-width:640px}
 </style>
 </head>
 <body>
-<div class="hero"><div class="wrap"><h1>Don Platico</h1><p id="fechaMenu">Cargando menú...</p></div></div>
+<div class="hero"><div class="wrap"><h1>Don Platico</h1><p id="fechaMenu">Cargando menú del día...</p></div></div>
 <div class="wrap">
+
 <section class="block">
 <div class="top-actions"><button class="ghost-btn" id="exitBtn">Salir</button><button class="ghost-btn ghost-btn-accent" id="quickMenuBtn">Sólo pedir el menú del día</button></div>
 <button class="voice-cta" id="voiceStartBtn">🎤 Hacer mi pedido por voz</button>
 <h2>Tus datos</h2>
 <div class="field-group"><label>Nombre de contacto</label><input type="text" id="nombre" placeholder="Ej. Juan Pablo Durán"></div>
 <div class="field-group"><label>Número de contacto</label><input type="text" id="telefono" placeholder="Ej. 300 123 4567"></div>
-<div class="field-group"><label>Dirección de entrega</label><input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20"></div>
-<div class="field-group"><label>Observaciones</label><textarea id="observaciones" rows="3" placeholder="Sin picante..."></textarea></div>
+<div class="field-group"><label>Dirección de entrega</label><input type="text" id="direccion" placeholder="Ej. Cra 5 # 10-20, Cartagena"></div>
+<div class="field-group"><label>Observaciones (opcional)</label><textarea id="observaciones" rows="3" placeholder="Sin picante, timbre 2..."></textarea></div>
 </section>
+
 <section class="block"><h2>🍲 Platos Principales</h2><div id="menuDishes"></div></section>
 <section class="block"><h2>🍲 Platos a la carta</h2><div id="especialidades"></div></section>
 <section class="block"><h2>🍟 Adicionales</h2><div id="adicionales"></div></section>
 <section class="block"><h2>🥤 Bebidas</h2><div id="bebidas"></div></section>
-<section class="block"><h2>Seleccionar medio de pago</h2><div class="pay-options"><div class="pay-btn active" data-pay="Efectivo"><span class="pay-line1">Pago en efectivo</span><span class="pay-line2">Tengo la suma cerrada de...(dar click)</span></div><div class="pay-btn" data-pay="Nequi"><span class="pay-line1">Nequi</span><span class="pay-line2">301 488 5090</span></div><div class="pay-btn" data-pay="Billete"><span class="pay-line1">Billete</span><span class="pay-line2">Especificar monto</span></div></div><div id="billeteWrap"><div class="field-group"><input type="number" id="billete" placeholder="Monto en billetes"></div></div></section>
-<section class="block"><h2>Resumen del pedido</h2><div id="summaryLines"></div><div id="emptyNote" class="empty-note">Aún no has agregado platos.</div></section>
-<div class="nequi-banner">Nequi Don Platico · 301 488 5090</div>
+
+<section class="block"><h2>Seleccionar medio de pago</h2>
+<div class="pay-options">
+  <div class="pay-btn active" data-pay="Efectivo - Suma cerrada por el valor del pedido">
+    <span class="pay-line1">Pago en efectivo</span>
+    <span class="pay-line2">Tengo la suma cerrada por el valor del pedido (dar click)</span>
+  </div>
+  <div class="pay-btn" data-pay="Transferencia NEQUI 3014885090">
+    <span class="pay-line1">Nequi</span>
+    <span class="pay-line2">301 488 5090 (dar click)</span>
+  </div>
+  <div class="pay-btn" data-pay="Efectivo - Debe llevar cambio">
+    <span class="pay-line1">Pago en Efectivo</span>
+    <span class="pay-line2">Especificar billetes (dar click)</span>
+  </div>
+</div>
+<div id="billeteWrap" class="field-group">
+  <label>¿Con qué billete pagas para llevar el cambio?</label>
+  <input type="text" id="billete" placeholder="Ej. $50.000 - $100.000">
+</div>
+</section>
+
+<section class="block"><h2>Resumen del pedido</h2><div id="summaryLines"></div><div id="emptyNote" class="empty-note">Aún no has agregado platos ni bebidas.</div></section>
+<div class="nequi-banner">Nequi Don Platico · 301 488 5090 · Pedidos con anticipación</div>
 <button class="exit-bottom" id="exitBottomBtn">Salir sin hacer pedido</button>
 </div>
 
@@ -87,22 +114,25 @@ async function loadMenu(){
   especialidadesData=d.platosCarta.map(o=>[o.nombre,o.precio]);
   adicionalesData=d.adicionales.map(o=>[o.nombre,o.precio]);
   bebidasData=d.bebidas.map(o=>[o.nombre,o.precio]);
-  document.getElementById('fechaMenu').textContent='Menú del día: '+(d.fecha||'Hoy');
+  document.getElementById('fechaMenu').textContent='Menú del día: '+(d.fecha||'Hoy')+' - Pedidos con anticipación';
   buildAll();
- }catch(e){buildAll();}
+ }catch(e){document.getElementById('fechaMenu').textContent='Menú del día'; buildAll();}
 }
 function money(n){return "$"+n.toLocaleString("es-CO");}
-function buildRows(cont,data,pref){cont.innerHTML='';data.forEach((it,i)=>{const r=document.createElement("div");r.className="item-row";r.innerHTML=`<div><div class="item-name">${it[0]}</div><div class="item-price">${money(it[1])}</div></div><div class="stepper" data-item="${pref}_${i}" data-name="${it[0]}" data-price="${it[1]}"><button>−</button><div class="qty">0</div><button>+</button></div>`;cont.appendChild(r);});cont.addEventListener("change",()=>render());}
-function buildAll(){buildRows(document.getElementById("menuDishes"),menuDiaData,"dish");buildRows(document.getElementById("especialidades"),especialidadesData,"esp");buildRows(document.getElementById("adicionales"),adicionalesData,"adi");buildRows(document.getElementById("bebidas"),bebidasData,"beb");}
-function doExit(){if(confirm("¿Salir sin pedido?")) location.href="about:blank";}
-document.getElementById("exitBtn").onclick=doExit;document.getElementById("exitBottomBtn").onclick=doExit;
-document.body.addEventListener("click",e=>{const b=e.target.closest(".stepper button");if(!b)return;const s=b.closest(".stepper");const q=s.querySelector(".qty");let v=parseInt(q.textContent,10)+(b.dataset.op==="+"?1:-1);v=Math.max(0,v);q.textContent=v;render();});
-let payMethod="Efectivo";document.querySelectorAll(".pay-btn").forEach(b=>{b.onclick=()=>{document.querySelectorAll(".pay-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");payMethod=b.dataset.pay;document.getElementById("billeteWrap").style.display=payMethod==="Billete"?"block":"none";render();};});
-function getCart(){const c=[];document.querySelectorAll(".stepper").forEach(s=>{const q=parseInt(s.querySelector(".qty").textContent,10);if(q>0)c.push({key:s.dataset.item,name:s.dataset.name,price:parseInt(s.dataset.price),qty:q});});return c;}
-function calcTotals(cart){let sub=0;cart.forEach(i=>sub+=i.price*i.qty);let rec=0;cart.forEach(it=>{const low=it.name.toLowerCase();if(it.key.startsWith("adi"))return;if(it.key.startsWith("beb")&&it.price<3000)return;rec+=it.price*it.qty*0.1;});rec=Math.round(rec);let total=sub+rec;if(payMethod==="Billete"){const b=parseInt(document.getElementById("billete").value,10);if(b>0)total=b;}return{sub,rec,total};}
-function render(){const cart=getCart();const t=calcTotals(cart);const sum=document.getElementById("summaryLines");sum.innerHTML='';if(cart.length===0)document.getElementById("emptyNote").style.display="block";else{document.getElementById("emptyNote").style.display="none";cart.forEach(it=>{const l=document.createElement("div");l.className="summary-line";l.innerHTML=`${it.name} x${it.qty}<span>${money(it.price*it.qty)}</span>`;sum.appendChild(l);});if(t.rec>0){const l=document.createElement("div");l.className="summary-line";l.innerHTML=`Recargo (10%)<span>${money(t.rec)}</span>`;sum.appendChild(l);}}const tl=document.createElement("div");tl.className="summary-line total";tl.innerHTML=`Total<span>${money(t.total)}</span>`;sum.appendChild(tl);const allFilled=["nombre","telefono","direccion"].every(id=>document.getElementById(id).value.trim());const btn=document.getElementById("sendBtn");btn.disabled=!allFilled;document.getElementById("disabledHint").style.display=allFilled?"none":"block";document.getElementById("ctaTotal").textContent=money(t.total);return t;}
+function buildRows(cont,data,pref){cont.innerHTML='';data.forEach((it,i)=>{const r=document.createElement("div");r.className="item-row";r.innerHTML=`<div><div class="item-name">${it[0]}</div><div class="item-price">${money(it[1])} c/u</div></div><div class="stepper" data-item="${pref}${i}" data-price="${it[1]}" data-name="${it[0]}"><button data-action="minus">−</button><span class="qty">0</span><button data-action="plus">+</button></div>`;cont.appendChild(r);});}
+function buildAll(){buildRows(document.getElementById("menuDishes"),menuDiaData,"dish");buildRows(document.getElementById("especialidades"),especialidadesData,"esp");buildRows(document.getElementById("adicionales"),adicionalesData,"adi");buildRows(document.getElementById("bebidas"),bebidasData,"beb");render();}
+function doExit(){if(confirm("¿Seguro que quieres salir sin hacer tu pedido?")){window.close(); setTimeout(()=>location.href="about:blank",300);}}
+document.getElementById("exitBtn").onclick=doExit; document.getElementById("exitBottomBtn").onclick=doExit;
+document.getElementById("quickMenuBtn").onclick=()=>{let txt=`*Menú Don Platico*%0A`+menuDiaData.map(i=>`- ${i[0]}: ${money(i[1])}`).join('%0A'); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${txt}`,"_blank");};
+document.body.addEventListener("click",e=>{const b=e.target.closest(".stepper button"); if(!b) return; const s=b.closest(".stepper"); const q=s.querySelector(".qty"); let v=parseInt(q.textContent,10)+(b.dataset.action==="plus"?1:-1); v=Math.max(0,v); q.textContent=v; render();});
+let payMethod="Efectivo - Suma cerrada por el valor del pedido";
+document.querySelectorAll(".pay-btn").forEach(b=>{b.onclick=()=>{document.querySelectorAll(".pay-btn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); payMethod=b.dataset.pay; document.getElementById("billeteWrap").style.display = (payMethod.includes("cambio") || payMethod.includes("Billete")) ? "block" : "none"; render();};});
+function getCart(){const c=[]; document.querySelectorAll(".stepper").forEach(s=>{const q=parseInt(s.querySelector(".qty").textContent,10); if(q>0) c.push({key:s.dataset.item,name:s.dataset.name,price:parseInt(s.dataset.price,10),qty:q});}); return c;}
+function calcTotals(cart){let sub=0; cart.forEach(i=>sub+=i.price*i.qty); let rec=0; cart.forEach(it=>{const low=it.name.toLowerCase(); if(it.key.startsWith("adi")) return; if(it.key.startsWith("beb") && it.price>7000) return; if(low.includes("sancocho")) rec+=2000*it.qty; else if(it.key.startsWith("dish")||it.key.startsWith("esp")) rec+=1000*it.qty;}); return {subtotal:sub,recipientes:rec,total:sub+rec};}
+function render(){const cart=getCart(); const t=calcTotals(cart); const sum=document.getElementById("summaryLines"); sum.innerHTML=''; if(cart.length===0) document.getElementById("emptyNote").style.display="block"; else{document.getElementById("emptyNote").style.display="none"; cart.forEach(it=>{const l=document.createElement("div");l.className="summary-line";l.innerHTML=`<span>${it.name} × ${it.qty}</span><span>${money(it.price*it.qty)}</span>`; sum.appendChild(l);}); const r=document.createElement("div");r.className="summary-line";r.innerHTML=`<span>Recipientes</span><span>${money(t.recipientes)}</span>`;sum.appendChild(r); const tot=document.createElement("div");tot.className="summary-line total";tot.innerHTML=`<span>Total a pagar</span><span>${money(t.total)}</span>`;sum.appendChild(tot);}document.getElementById("ctaTotal").textContent=money(t.total); const nom=document.getElementById("nombre").value.trim(), tel=document.getElementById("telefono").value.trim(), dir=document.getElementById("direccion").value.trim(); const can=cart.length>0&&nom&&tel&&dir; document.getElementById("disabledHint").style.display=can?"none":"block"; document.getElementById("sendBtn").style.display=can?"block":"none"; return {cart,subtotal:t.subtotal,recipientes:t.recipientes,total:t.total};}
 ["nombre","telefono","direccion","billete","observaciones"].forEach(id=>document.getElementById(id).addEventListener("input",render));
-document.getElementById("sendBtn").onclick=()=>{const d=render();let msg=`*Pedido Don Platico*%0ANombre: ${document.getElementById("nombre").value}%0ATel: ${document.getElementById("telefono").value}%0ADireccion: ${document.getElementById("direccion").value}%0A%0A`;getCart().forEach(it=>msg+=`${it.name} x${it.qty} = ${money(it.price*it.qty)}%0A`);msg+=`%0ARecargo: ${money(d.rec)}%0ATotal: ${money(d.total)}%0AMedio de pago: ${payMethod}%0A`;if(document.getElementById("observaciones").value)msg+=`Observaciones: ${document.getElementById("observaciones").value}%0A`;window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`);};
+document.getElementById("sendBtn").onclick=()=>{const d=render(); let msg=`*Pedido Don Platico*%0ANombre: ${document.getElementById("nombre").value}%0ATel: ${document.getElementById("telefono").value}%0ADir: ${document.getElementById("direccion").value}%0A%0A*Pedido:*%0A`; d.cart.forEach(i=>msg+=`- ${i.name} x${i.qty} — ${money(i.price*i.qty)}%0A`); msg+=`%0ASubtotal: ${money(d.subtotal)}%0ARecipientes: ${money(d.recipientes)}%0A*Total: ${money(d.total)}*%0APago: ${payMethod} ${document.getElementById("billete").value}%0AObs: ${document.getElementById("observaciones").value}`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");};
+document.getElementById("voiceStartBtn").onclick=()=>alert("Pedido por voz activo - usa el micrófono del celular");
 loadMenu();
 </script>
 </body>

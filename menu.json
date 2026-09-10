@@ -2,6 +2,14 @@
   "fecha": "2026-09-10",
   "platosPrincipales": [
     {
+      "nombre": "Hígado (Encebollado/Bistec)",
+      "precio": 19000
+    },
+    {
+      "nombre": "Alitas BBQ",
+      "precio": 19000
+    },
+    {
       "nombre": "Pollo frito",
       "precio": 19000
     },
@@ -14,7 +22,7 @@
       "precio": 19000
     },
     {
-      "nombre": "Alitas BBQ",
+      "nombre": "Carne guisada",
       "precio": 19000
     },
     {
@@ -22,7 +30,11 @@
       "precio": 19000
     },
     {
-      "nombre": "Chuleta asada",
+      "nombre": "Jurel en zumo",
+      "precio": 19000
+    },
+    {
+      "nombre": "Salpicón de pescado",
       "precio": 19000
     },
     {
@@ -30,16 +42,8 @@
       "precio": 9000
     },
     {
-      "nombre": "Sancocho de pollo con Arroz",
+      "nombre": "Sancocho de pesacado con Arroz",
       "precio": 9000
-    },
-    {
-      "nombre": "Carne desmechada",
-      "precio": 19000
-    },
-    {
-      "nombre": "Carne en bistec",
-      "precio": 19000
     }
   ],
   "platosCarta": [

@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-09-10",
+  "fecha": "2026-09-11",
   "platosPrincipales": [
     {
       "nombre": "Hígado (Encebollado/Bistec)",
@@ -23,6 +23,10 @@
     },
     {
       "nombre": "Carne guisada",
+      "precio": 19000
+    },
+    {
+      "nombre": "lengua en salsa",
       "precio": 19000
     },
     {

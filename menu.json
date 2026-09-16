@@ -1,12 +1,8 @@
 {
-  "fecha": "2026-09-13",
+  "fecha": "2026-09-15",
   "platosPrincipales": [
     {
-      "nombre": "Hígado (Encebollado/Bistec)",
-      "precio": 19000
-    },
-    {
-      "nombre": "Alitas BBQ",
+      "nombre": "Hígado encebollado",
       "precio": 19000
     },
     {
@@ -22,7 +18,7 @@
       "precio": 19000
     },
     {
-      "nombre": "lengua en salsa",
+      "nombre": "Carne guisado",
       "precio": 19000
     },
     {
@@ -38,11 +34,11 @@
       "precio": 19000
     },
     {
-      "nombre": "​Sancocho de hueso con Arroz",
+      "nombre": "​Sancocho de pollo con Arroz",
       "precio": 9000
     },
     {
-      "nombre": "Sancocho de pesacado con Arroz",
+      "nombre": "Sancocho de pescado con Arroz",
       "precio": 9000
     }
   ],

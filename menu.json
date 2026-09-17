@@ -1,12 +1,16 @@
 {
-  "fecha": "2026-09-16",
+  "fecha": "2026-09-17",
   "platosPrincipales": [
     {
-      "nombre": "Hígado encebollado",
+      "nombre": "Hígado encebollado o en bistec",
       "precio": 19000
     },
     {
       "nombre": "Pollo frito",
+      "precio": 19000
+    },
+    {
+      "nombre": "Pollo guisado",
       "precio": 19000
     },
     {
@@ -18,7 +22,7 @@
       "precio": 19000
     },
     {
-      "nombre": "Carne esmechada",
+      "nombre": "Carne guisada",
       "precio": 19000
     },
     {
@@ -34,7 +38,7 @@
       "precio": 19000
     },
     {
-      "nombre": "​Sancocho de pollo con Arroz",
+      "nombre": "​Sancocho de hueso con Arroz",
       "precio": 9000
     },
     {
